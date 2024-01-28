@@ -1,8 +1,10 @@
 import { useDrop } from "react-dnd"
 
-export default Whiteboard = (props) => {
+const Whiteboard = (props) => {
     const [collectProps, drop] = useDrop(() => ({
         accept: props.accepttype
     }))
-    return <div ref={drop}>Drop target</div>
+    return <div ref={drop} class={props.class}>{props.children}</div>
 }
+
+export default Whiteboard

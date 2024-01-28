@@ -7,11 +7,28 @@ import Whiteboard from './Whiteboard';
 function App() {
   return (
     <div className="App">
-      <div className="editor" class="flex">
-        <EditorPane>
-          <Draggable class="border-8 border-sky-500 h-dvh">Hi</Draggable>
+      <div className="editor" class="flex grid grid-cols-4 h-dvh">
+        <EditorPane class="grid grid-cols-2">
+          <Draggable type="BOX">
+            <rect x="20" width="50" height="100" fill="black"/>
+          </Draggable>
+          <Draggable type="BOX">
+            <circle cx="50" cy="50" r="25" fill="grey"/>
+          </Draggable>
+          <Draggable type="BOX">
+            <rect width="100" height="100" fill="red"/>
+          </Draggable>
+          <Draggable type="BOX">
+            <circle cx="50" cy="50" r="50" fill="blue"/>
+          </Draggable>
+          <Draggable type="BOX">
+            <rect width="100" height="100" fill="yellow"/>
+          </Draggable>
+          <Draggable type="BOX">
+            <rect width="100" height="100" fill="green"/>
+          </Draggable>
         </EditorPane>
-        <Whiteboard></Whiteboard>
+        <Whiteboard class="rounded-md border-4 border-slate-500 col-span-3 flex items-center justify-center" accepttype="BOX"><p>Whiteboard</p></Whiteboard>
       </div>
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />

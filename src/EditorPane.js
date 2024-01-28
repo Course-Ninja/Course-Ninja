@@ -1,7 +1,9 @@
-export default EditorPane = (props) => {
+const EditorPane= (props) => {
     return (
-        <div class="h-dvh">
+        <div class={props.class}>
             {props.children}
         </div>
     )
 }
+
+export default EditorPane 
