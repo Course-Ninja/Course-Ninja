@@ -1,6 +1,6 @@
 const EditorPane= (props) => {
     return (
-        <div class={props.class}>
+        <div className={props.className}>
             {props.children}
         </div>
     )

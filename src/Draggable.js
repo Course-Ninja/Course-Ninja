@@ -5,20 +5,20 @@ const Draggable = (props) => {
     const [collected, drag, dragpreview] = useDrag(() => (
         {
             type: props.type,
-            item: props.id,
+            item: { id: props.id, obj: props.children },
             collect: (monitor) => ({
                 isDragging: monitor.isDragging()
             })
         }
     ))
     return collected.isDragging ? (
-        <div class={classes} ref={dragpreview}>
+        <div className={classes} ref={dragpreview}>
             <svg viewBox="0 0 100 100">
                 {props.children}
             </svg>
         </div>
     ) : (
-        <div class={classes} ref={drag} {...collected}>
+        <div className={classes} ref={drag}>
             <svg viewBox="0 0 100 100">
                 {props.children}
             </svg>
