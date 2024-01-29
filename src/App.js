@@ -12,11 +12,11 @@ function App() {
           <Draggable type="BOX">
             <rect x="20" width="50" height="100" fill="black"/>
           </Draggable>
-          <Draggable type="BOX" id="grey-circle">
-            <circle cx="50" cy="50" r="25" fill="grey"/>
+          <Draggable type="BOX">
+            <circle cx="50" cy="50" r="25" fill="grey" id="grey-circle"/>
           </Draggable>
           <Draggable type="BOX">
-            <rect width="100" height="100" fill="red"/>
+            <rect width="100" height="100" fill="red" id="red-square"/>
           </Draggable>
           <Draggable type="BOX">
             <circle cx="50" cy="50" r="50" fill="blue"/>
