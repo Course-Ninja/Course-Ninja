@@ -15,9 +15,6 @@ const Objects = () => {
             <Draggable type="BOX">
                 <Circle x="20" y="50" r="50" style={{ "fill": "blue" }} />
             </Draggable>
-            <Draggable type="BOX">
-                <Square l="25"/>
-            </Draggable>
         </div>
     )
 }

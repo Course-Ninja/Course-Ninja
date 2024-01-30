@@ -1,9 +1,10 @@
-import { createElement, useCallback, useState } from "react"
+import { createElement, useCallback, useRef, useState } from "react"
 import { useDrop } from "react-dnd"
 
 const Whiteboard = (props) => {
-    const className="rounded-md border-4 border-slate-500 col-span-3 flex items-center justify-center"
+    const className = "rounded-md border-4 border-slate-500 col-span-3 flex items-center justify-center"
     var [elements, setElements] = useState([])
+    const ref = useRef(null)
 
     const addElement = useCallback(
         (element, left, top) => {
@@ -15,7 +16,7 @@ const Whiteboard = (props) => {
     const [, drop] = useDrop(() => ({
         drop: (item, monitor) => {
             const delta = monitor.getClientOffset()
-            const left = Math.round(delta.x)
+            const left = Math.round(delta.x - ref.current.offsetLeft)
             const top = Math.round(delta.y)
             addElement(item.obj, left, top)
         },
@@ -23,19 +24,20 @@ const Whiteboard = (props) => {
     }))
 
     return (
-        <div ref={drop} className={className}>
+        <div ref={
+            el => {
+                drop(el)
+                ref.current = el
+            }
+        } className={className}>
             <svg className="w-full h-full">
                 {elements.map(
-                    ({ element: { type, props }, left, top }, key = {}) => (createElement(type, {...props, key: key})
-                        // createElement(type, {
-                        //     fill: props.fill,
-                        //     width: props.width,
-                        //     height: props.height,
-                        //     x: left / 100,
-                        //     y: top / 100,
-                        //     key: key
-                        // })
-                    )
+                    ({ element: { type, props }, left, top }, key = {}) => {
+                        const newProps = {...props}
+                        newProps.x = left
+                        newProps.y = top
+                        return createElement(type, { ...newProps, key: key })
+                    }
                 )}
             </svg>
         </div>
