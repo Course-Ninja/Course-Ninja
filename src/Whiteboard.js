@@ -2,6 +2,7 @@ import { createElement, useCallback, useState } from "react"
 import { useDrop } from "react-dnd"
 
 const Whiteboard = (props) => {
+    const className="rounded-md border-4 border-slate-500 col-span-3 flex items-center justify-center"
     var [elements, setElements] = useState([])
 
     const addElement = useCallback(
@@ -13,7 +14,7 @@ const Whiteboard = (props) => {
 
     const [, drop] = useDrop(() => ({
         drop: (item, monitor) => {
-            const delta = monitor.getSourceClientOffset()
+            const delta = monitor.getClientOffset()
             const left = Math.round(delta.x)
             const top = Math.round(delta.y)
             addElement(item.obj, left, top)
@@ -22,8 +23,8 @@ const Whiteboard = (props) => {
     }))
 
     return (
-        <div ref={drop} className={props.className}>
-            <svg viewBox="0 0 100 100">
+        <div ref={drop} className={className}>
+            <svg className="w-full h-full">
                 {elements.map(
                     ({ element: { type, props }, left, top }, key = {}) => (createElement(type, {...props, key: key})
                         // createElement(type, {

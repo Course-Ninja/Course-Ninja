@@ -1,6 +1,7 @@
 const EditorPane= (props) => {
+    const className="grid grid-cols-2 auto-rows-min"
     return (
-        <div className={props.className}>
+        <div className={className}>
             {props.children}
         </div>
     )
