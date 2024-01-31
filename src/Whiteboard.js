@@ -5,14 +5,13 @@ import Dragtype from "./Dragtype"
 
 const Whiteboard = (props) => {
     const className = "rounded-md border-4 border-slate-500 col-span-3 flex items-center justify-center relative"
-    var [elements, setElements] = useState([])
+    const [elements, setElements] = useState([])
     const ref = useRef(null)
 
     const addElement = useCallback(
         (element, left, top) => {
-            elements = [...elements, { element, left, top }]
-            setElements(elements)
-        }, [elements, setElements]
+            setElements(elems => [...elems, { element, left, top }])
+        }, [setElements]
     )
 
     const [, drop] = useDrop(() => ({
@@ -34,9 +33,11 @@ const Whiteboard = (props) => {
         } className={className}>
             {elements.map(
                 ({ element: { type, props }, left, top }, key = {}) => {
-                    const newProps = { ...props }
-                    newProps.style = {...newProps.style, left, top}
-                    return <Draggable key={key} className="fixed" style={newProps.style} type={Dragtype.Moveable}>{createElement(type, {...newProps})}</Draggable>
+                    return (
+                        <Draggable key={key} className="fixed" type={Dragtype.Moveable}>
+                            {createElement(type, { ...props })}
+                        </Draggable>
+                    )
                 }
             )}
         </div>
