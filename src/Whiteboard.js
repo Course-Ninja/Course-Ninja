@@ -17,10 +17,16 @@ const Whiteboard = (props) => {
 
     const [, drop] = useDrop(() => ({
         drop: (item, monitor) => {
-            const delta = monitor.getClientOffset()
-            const left = Math.round(delta.x - tileSize)
-            const top = Math.round(delta.y - tileSize)
-            addElement(item.obj, left, top)
+            switch (monitor.getItemType()) {
+                case Dragtype.MenuTile:
+                    const delta = monitor.getClientOffset()
+                    const left = Math.round(delta.x - tileSize)
+                    const top = Math.round(delta.y - tileSize)
+                    addElement(item.obj, left, top)
+                    return undefined
+                case Dragtype.Moveable:
+                default:
+            }
         },
         accept: [Dragtype.MenuTile, Dragtype.Moveable]
     }))
@@ -31,11 +37,11 @@ const Whiteboard = (props) => {
                 drop(el)
                 ref.current = el
             }
-        } className={className}>
+        } className={className} {...props}>
             {elements.map(
                 ({ element: { type, props }, left, top }, key) => {
                     return (
-                        <Draggable key={key} className="fixed" style={{left, top}} type={Dragtype.Moveable}>
+                        <Draggable key={key} className="fixed" style={{ left, top }} type={Dragtype.Moveable}>
                             {createElement(type, { ...props })}
                         </Draggable>
                     )
