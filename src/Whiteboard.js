@@ -4,6 +4,7 @@ import Draggable from "./Draggable"
 import Dragtype from "./Dragtype"
 
 const Whiteboard = (props) => {
+    const tileSize = 150 // arbitrary value for center of tile, remove once better method is found
     const className = "rounded-md border-4 border-slate-500 col-span-3 flex items-center justify-center relative"
     const [elements, setElements] = useState([])
     const ref = useRef(null)
@@ -17,8 +18,8 @@ const Whiteboard = (props) => {
     const [, drop] = useDrop(() => ({
         drop: (item, monitor) => {
             const delta = monitor.getClientOffset()
-            const left = Math.round(delta.x)
-            const top = Math.round(delta.y)
+            const left = Math.round(delta.x - tileSize)
+            const top = Math.round(delta.y - tileSize)
             addElement(item.obj, left, top)
         },
         accept: [Dragtype.MenuTile, Dragtype.Moveable]
@@ -32,9 +33,9 @@ const Whiteboard = (props) => {
             }
         } className={className}>
             {elements.map(
-                ({ element: { type, props }, left, top }, key = {}) => {
+                ({ element: { type, props }, left, top }, key) => {
                     return (
-                        <Draggable key={key} className="fixed" type={Dragtype.Moveable}>
+                        <Draggable key={key} className="fixed" style={{left, top}} type={Dragtype.Moveable}>
                             {createElement(type, { ...props })}
                         </Draggable>
                     )
