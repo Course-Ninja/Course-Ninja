@@ -1,7 +1,6 @@
 import { useDrag } from "react-dnd"
 
 const Draggable = (props) => {
-    const classes="aspect-square border-8 border-sky-500" 
     const [collected, drag, dragpreview] = useDrag(() => (
         {
             type: props.type,
@@ -11,15 +10,9 @@ const Draggable = (props) => {
             })
         }
     ))
-    return collected.isDragging ? (
-        <div className={classes} ref={dragpreview}>
-            <svg viewBox="0 0 100 100">
-                {props.children}
-            </svg>
-        </div>
-    ) : (
-        <div className={classes} ref={drag}>
-            <svg viewBox="0 0 100 100">
+    return (
+        <div ref={collected.isDragging ? dragpreview : drag} className={props.className} style={props.style}>
+            <svg viewBox="0 0 100 100" className="h-full w-full">
                 {props.children}
             </svg>
         </div>

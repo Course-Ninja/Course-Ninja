@@ -11,7 +11,7 @@ function App() {
         <EditorPane>
           <Objects />
         </EditorPane>
-        <Whiteboard accepttype="BOX"><p>Whiteboard</p></Whiteboard>
+        <Whiteboard><p>Whiteboard</p></Whiteboard>
       </div>
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
