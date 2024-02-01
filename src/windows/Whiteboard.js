@@ -30,14 +30,12 @@ const Whiteboard = (props) => {
             const top = Math.round(delta.y - tileSize)
             switch (monitor.getItemType()) {
                 case Dragtype.MenuTile:
-                    // console.log("Create:", item.id)
                     addElement(item, left, top)
                     return undefined
                 case Dragtype.Moveable:
                     // const deltamove = monitor.getDifferenceFromInitialOffset()
                     // const leftmove = Math.round(item.left + deltamove.x)
                     // const topmove = Math.round(item.top + deltamove.y)
-                    // console.log("Move:", item.id)
                     // moveElement(item, leftmove, topmove)
                     moveElement(item, left, top)
                     return undefined
@@ -54,17 +52,16 @@ const Whiteboard = (props) => {
                 ref.current = el
             }
         } className={className} {...props}>
-            {Object.entries(elements).map(
-                ([id, { obj: { type, props }, left, top }], key) =>
+            {Object.entries(elements).length ?  Object.entries(elements).map(
+                ([id, { obj: { type, props }, left, top }], key = {}) =>
                     <Draggable dragid={id} // for element movement
                         key={key} // array map key
-                        className="fixed" style={{ left, top }} // absolute positioning on whiteboard
+                        className="fixed" // absolute positioning on whiteboard
                         left={left} top={top} // pass coordinates to Draggable
                         type={Dragtype.Moveable} /*drag type*/>
                         {createElement(type, { ...props })}
                     </Draggable>
-            )
-            }
+            ) : "Whiteboard"}
         </div>
     )
 }
