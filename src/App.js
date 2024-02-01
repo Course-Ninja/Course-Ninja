@@ -1,17 +1,23 @@
 // import logo from './logo.svg';
 import './App.css';
-import EditorPane from './EditorPane'
-import Whiteboard from './Whiteboard';
+import EditorPane from './windows/EditorPane'
+import Whiteboard from './windows/Whiteboard';
 import Objects from './tabs/Objects';
+import { createContext, useState } from 'react';
+
+export const Elements = createContext()
 
 function App() {
+  const [elements, setElements] = useState({})
   return (
     <div className="App">
       <div id="editor" className="flex grid grid-cols-4 h-dvh">
-        <EditorPane>
-          <Objects />
-        </EditorPane>
-        <Whiteboard><p>Whiteboard</p></Whiteboard>
+        <Elements.Provider value={{elements, setElements}}>
+          <EditorPane>
+            <Objects />
+          </EditorPane>
+          <Whiteboard><p>Whiteboard</p></Whiteboard>
+        </Elements.Provider>
       </div>
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
