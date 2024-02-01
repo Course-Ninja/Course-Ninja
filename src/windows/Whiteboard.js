@@ -1,13 +1,14 @@
-import { createElement, useCallback, useRef, useState } from "react"
+import { createElement, useCallback, useContext, useRef } from "react"
 import { useDrop } from "react-dnd"
 import Draggable from "../drags/Draggable"
 import Dragtype from "../drags/Dragtype"
 import { v4 as uuid } from "uuid"
+import { Elements } from "../App"
 
 const Whiteboard = (props) => {
     const tileSize = 150 // arbitrary value for center of tile, remove once better method is found
     const className = "rounded-md border-4 border-slate-500 col-span-3 flex items-center justify-center relative"
-    const [elements, setElements] = useState({})
+    const { elements, setElements } = useContext(Elements)
     const ref = useRef(null)
 
     const addElement = useCallback(
