@@ -3,6 +3,8 @@ import { useDrop } from "react-dnd"
 import Draggable from "./Draggable"
 import Dragtype from "./Dragtype"
 import { v4 as uuid } from "uuid"
+import ContextMenu, { MENU_ID } from "./ContextMenu"
+import { useContextMenu } from "react-contexify"
 
 const Whiteboard = (props) => {
     const tileSize = 150 // arbitrary value for center of tile, remove once better method is found
@@ -46,6 +48,11 @@ const Whiteboard = (props) => {
         accept: [Dragtype.MenuTile, Dragtype.Moveable]
     }))
 
+    const { show } = useContextMenu({ id: MENU_ID })
+    const handleContextMenu = event => {
+        show({ event })
+    }
+
     return (
         <div ref={
             el => {
@@ -55,13 +62,17 @@ const Whiteboard = (props) => {
         } className={className} {...props}>
             {Object.entries(elements).map(
                 ([id, { obj: { type, props }, left, top }], key) =>
-                    <Draggable dragid={id} // for element movement
-                        key={key} // array map key
-                        className="fixed" style={{ left, top }} // absolute positioning on whiteboard
-                        left={left} top={top} // pass coordinates to Draggable
-                        type={Dragtype.Moveable} /*drag type*/>
-                        {createElement(type, { ...props })}
-                    </Draggable>
+                    <div onContextMenu={handleContextMenu}>
+                        <Draggable dragid={id} // for element movement
+                            key={key} // array map key
+                            className="fixed" style={{ left, top }} // absolute positioning on whiteboard
+                            left={left} top={top} // pass coordinates to Draggable
+                            type={Dragtype.Moveable} //drag type
+                        >
+                            {createElement(type, { ...props })}
+                        </Draggable>
+                        <ContextMenu id={id}/>
+                    </div>
             )
             }
         </div>
