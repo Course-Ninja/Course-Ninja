@@ -12,13 +12,13 @@ const Whiteboard = (props) => {
 
     const addElement = useCallback(
         ({ id, obj }, left, top) => {
-            setElements(elems => { return { ...elems, [id ? id : uuid()]: { obj, left, top } } })
+            setElements(elems => ({ ...elems, [id ? id : uuid()]: { obj, left, top } }))
         }, [setElements]
     )
 
     const moveElement = useCallback(
         ({ id, obj }, left, top) => {
-            setElements(elems => { return { ...elems, [id]: { obj, left, top } } })
+            setElements(elems => ({ ...elems, [id]: { obj, left, top } }))
         }, [setElements]
     )
 
@@ -54,17 +54,15 @@ const Whiteboard = (props) => {
             }
         } className={className} {...props}>
             {Object.entries(elements).map(
-                ([id, { obj: { type, props }, left, top }], key) => {
-                    return (
-                        <Draggable dragid={id} // for element movement
-                            key={key} // array map key
-                            className="fixed" style={{ left, top }} // absolute positioning on whiteboard
-                            left={left} top={top} // pass coordinates to Draggable
-                            type={Dragtype.Moveable} /*drag type*/>
-                            {createElement(type, { ...props })}
-                        </Draggable>
-                    )
-                })
+                ([id, { obj: { type, props }, left, top }], key) =>
+                    <Draggable dragid={id} // for element movement
+                        key={key} // array map key
+                        className="fixed" style={{ left, top }} // absolute positioning on whiteboard
+                        left={left} top={top} // pass coordinates to Draggable
+                        type={Dragtype.Moveable} /*drag type*/>
+                        {createElement(type, { ...props })}
+                    </Draggable>
+            )
             }
         </div>
     )
