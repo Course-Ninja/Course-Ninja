@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
-import EditorPane from './EditorPane'
-import Whiteboard from './Whiteboard';
+import EditorPane from './windows/EditorPane'
+import Whiteboard from './windows/Whiteboard';
 import Objects from './tabs/Objects';
 
 function App() {

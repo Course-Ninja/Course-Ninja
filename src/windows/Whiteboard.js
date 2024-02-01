@@ -1,7 +1,7 @@
 import { createElement, useCallback, useRef, useState } from "react"
 import { useDrop } from "react-dnd"
-import Draggable from "./Draggable"
-import Dragtype from "./Dragtype"
+import Draggable from "../drags/Draggable"
+import Dragtype from "../drags/Dragtype"
 import { v4 as uuid } from "uuid"
 
 const Whiteboard = (props) => {
