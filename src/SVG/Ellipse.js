@@ -6,8 +6,12 @@
  * @param y y coordinate (from center)
  */
 
+import SVGWrapper from "./SVGWrapper"
+
 const Ellipse = (props) => {
-    return (<ellipse cx={props.x} cy={props.y} {...props}/>)
+    return <SVGWrapper>
+        <ellipse cx={props.x} cy={props.y} {...props} />)
+    </SVGWrapper>
 }
 
 export default Ellipse
