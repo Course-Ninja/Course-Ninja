@@ -36,7 +36,7 @@ const EditorPane = ({ children }) => {
         <div>
             {/* {props.children} */}
             {Children.map(children, child =>
-                <div className={activeTab === child.type.name ? "" : "hidden"}>
+                <div className={activeTab === child.props.id ? "" : "hidden"}>
                     {child}
                 </div>
             )}
@@ -44,12 +44,12 @@ const EditorPane = ({ children }) => {
         <div className="flex">
             <TabContext.Provider value={{ activeTab, setActiveTab }}>
                 <div className={`flex`}>
-                    {Children.map(children, child =>
-                        <Tab id={child.type.name}
+                    {Children.map(children, (child, key) => {
+                        return <Tab id={child.props.id}
                             className={`rounded-b-lg border-${borderSize} border-${borderColour} ${activeTab === child.type.name ? "border-t-transparent" : ""}`}>
-                            {child.type.name}
+                            {child.props.id}
                         </Tab>
-                    )}
+                    })}
                 </div>
                 <div className={`border-t-${borderSize} border-${borderColour} w-full`}></div>
             </TabContext.Provider>

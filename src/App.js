@@ -15,8 +15,8 @@ function App() {
       <div id="editor" className="flex grid grid-cols-4 h-dvh">
         <ElementsContext.Provider value={{elements, setElements}}>
           <EditorPane>
-            <Objects />
-            <Insert />
+            <Objects id="Objects"/>
+            <Insert id="Insert"/>
           </EditorPane>
           <Whiteboard><p>Whiteboard</p></Whiteboard>
         </ElementsContext.Provider>
