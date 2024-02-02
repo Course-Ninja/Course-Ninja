@@ -15,6 +15,9 @@ const Objects = () => {
             <MenuTile>
                 <Circle x="20" y="50" r="50" style={{ "fill": "blue" }} />
             </MenuTile>
+            <MenuTile>
+                <Circle x="50" y="0" r="50" style={{ "fill": "green" }} />
+            </MenuTile>
         </div>
     )
 }

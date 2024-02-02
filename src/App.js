@@ -3,21 +3,23 @@ import './App.css';
 import EditorPane from './windows/EditorPane'
 import Whiteboard from './windows/Whiteboard';
 import Objects from './tabs/Objects';
+import Insert from './tabs/Insert';
 import { createContext, useState } from 'react';
 
-export const Elements = createContext()
+export const ElementsContext = createContext()
 
 function App() {
   const [elements, setElements] = useState({})
   return (
     <div className="App">
       <div id="editor" className="flex grid grid-cols-4 h-dvh">
-        <Elements.Provider value={{elements, setElements}}>
+        <ElementsContext.Provider value={{elements, setElements}}>
           <EditorPane>
             <Objects />
+            <Insert />
           </EditorPane>
           <Whiteboard><p>Whiteboard</p></Whiteboard>
-        </Elements.Provider>
+        </ElementsContext.Provider>
       </div>
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
