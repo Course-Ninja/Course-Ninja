@@ -1,4 +1,4 @@
-import { createElement, useCallback, useContext, useRef } from "react"
+import { createElement, useCallback, useContext, useEffect, useRef } from "react"
 import { useDrop } from "react-dnd"
 import Draggable from "../drags/Draggable"
 import Dragtype from "../drags/Dragtype"
@@ -52,6 +52,10 @@ const Whiteboard = (props) => {
         show({ event, id })
     }
 
+    useEffect(() => {
+        window.onbeforeunload = () => Object.entries(elements).length ? true : undefined
+    }, [elements])
+
     return (
         <div ref={
             el => {
@@ -69,7 +73,7 @@ const Whiteboard = (props) => {
                         >
                             {createElement(type, { ...props })}
                         </Draggable>
-                        <ContextMenu id={id}/>
+                        <ContextMenu id={id} />
                     </div>
             ) : "Whiteboard"}
         </div>
