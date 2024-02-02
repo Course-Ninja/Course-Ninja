@@ -6,6 +6,7 @@ import Tab from "../components/Tab"
 
 const defaultTab = "Shapes"
 export const TabContext = createContext(defaultTab)
+export const gridLayout = "grid grid-cols-2 auto-rows-min overflow-auto"
 
 const EditorPane = ({ children }) => {
     const { setElements } = useContext(ElementsContext)
@@ -50,7 +51,7 @@ const EditorPane = ({ children }) => {
                                 borderWidth: `${borderSize}px`,
                                 borderTopColor: activeTab === child.props.id ? "transparent" : borderColour
                             }}
-                            className="rounded-b-lg px-1">
+                        >
                             {child.props.id}
                         </Tab>
                     )}

@@ -11,7 +11,7 @@ const Draggable = (props) => {
 
     const { left, top } = props
     return (
-        <div ref={collected.isDragging ? dragpreview : drag} className={props.className} style={{ left, top }}>
+        <div ref={collected.isDragging ? dragpreview : drag} className={`${props.className} cursor-move`} style={{ left, top }}>
                 {props.children}
         </div>
     )
