@@ -1,8 +1,10 @@
-import { createElement, useCallback, useContext, useRef } from "react"
+import { useCallback, useContext, useEffect, useRef } from "react"
 import { useDrop } from "react-dnd"
 import Draggable from "../drags/Draggable"
 import Dragtype from "../drags/Dragtype"
 import { v4 as uuid } from "uuid"
+import ContextMenu, { MENU_ID } from "../components/ContextMenu"
+import { useContextMenu } from "react-contexify"
 import { ElementsContext } from "../App"
 
 const Whiteboard = (props) => {
@@ -45,6 +47,15 @@ const Whiteboard = (props) => {
         accept: [Dragtype.MenuTile, Dragtype.Moveable]
     }))
 
+    const { show } = useContextMenu({ id: MENU_ID })
+    const handleContextMenu = (event, id) => {
+        show({ event, id })
+    }
+
+    useEffect(() => {
+        window.onbeforeunload = () => Object.entries(elements).length ? true : undefined
+    }, [elements])
+
     return (
         <div ref={
             el => {
@@ -52,15 +63,18 @@ const Whiteboard = (props) => {
                 ref.current = el
             }
         } className={className} {...props}>
-            {Object.entries(elements).length ?  Object.entries(elements).map(
-                ([id, { obj: { type, props }, left, top }], key = {}) =>
-                    <Draggable dragid={id} // for element movement
-                        key={key} // array map key
-                        className="fixed" // absolute positioning on whiteboard
-                        left={left} top={top} // pass coordinates to Draggable
-                        type={Dragtype.Moveable} /*drag type*/>
-                        {createElement(type, { ...props })}
-                    </Draggable>
+            {Object.entries(elements).length ? Object.entries(elements).map(
+                ([id, { obj, left, top }], key) =>
+                    <div onContextMenu={event => handleContextMenu(event, id)} key={key}>
+                        <Draggable dragid={id} // for element movement
+                            className="fixed size-fit" // absolute positioning on whiteboard
+                            left={left} top={top} // pass coordinates to Draggable
+                            type={Dragtype.Moveable} //drag type
+                        >
+                            {obj}
+                        </Draggable>
+                        <ContextMenu id={id} />
+                    </div>
             ) : "Whiteboard"}
         </div>
     )
