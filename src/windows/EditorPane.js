@@ -5,13 +5,13 @@ import { Children, createContext, useCallback, useContext, useState } from "reac
 import Tab from "../components/Tab"
 
 const defaultTab = "Objects"
-const borderColour = "slate-500"
-const borderSize = 4
 export const TabContext = createContext(defaultTab)
 
 const EditorPane = ({ children }) => {
     const { setElements } = useContext(ElementsContext)
     const [activeTab, setActiveTab] = useState(defaultTab)
+    const borderColour = "rgb(100 116 139)"
+    const borderSize = 4
 
     const removeElement = useCallback(id => {
         setElements(elems => Object.fromEntries(
@@ -34,7 +34,6 @@ const EditorPane = ({ children }) => {
             <p className="text-2xl font-bold">Delete</p>
         </div>
         <div>
-            {/* {props.children} */}
             {Children.map(children, child =>
                 <div className={activeTab === child.props.id ? "" : "hidden"}>
                     {child}
@@ -43,15 +42,22 @@ const EditorPane = ({ children }) => {
         </div>
         <div className="flex">
             <TabContext.Provider value={{ activeTab, setActiveTab }}>
-                <div className={`flex`}>
-                    {Children.map(children, (child, key) => {
-                        return <Tab id={child.props.id}
-                            className={`rounded-b-lg border-${borderSize} border-${borderColour} ${activeTab === child.type.name ? "border-t-transparent" : ""}`}>
+                <div className="flex">
+                    {Children.map(children, (child, key) =>
+                        <Tab id={child.props.id} key={key}
+                            style={{
+                                borderColor: borderColour,
+                                borderWidth: `${borderSize}px`,
+                                borderTopColor: activeTab === child.props.id ? "transparent" : borderColour
+                            }}
+                            className="rounded-b-lg">
                             {child.props.id}
                         </Tab>
-                    })}
+                    )}
                 </div>
-                <div className={`border-t-${borderSize} border-${borderColour} w-full`}></div>
+                <div className="w-full"
+                    style={{ borderColor: borderColour, borderTopWidth: `${borderSize}px` }}
+                ></div>
             </TabContext.Provider>
         </div>
     </div>
