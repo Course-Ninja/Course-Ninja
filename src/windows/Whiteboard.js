@@ -1,4 +1,4 @@
-import { createElement, useCallback, useContext, useEffect, useRef } from "react"
+import { useCallback, useContext, useEffect, useRef } from "react"
 import { useDrop } from "react-dnd"
 import Draggable from "../drags/Draggable"
 import Dragtype from "../drags/Dragtype"
@@ -64,14 +64,14 @@ const Whiteboard = (props) => {
             }
         } className={className} {...props}>
             {Object.entries(elements).length ? Object.entries(elements).map(
-                ([id, { obj: { type, props }, left, top }], key) =>
+                ([id, { obj, left, top }], key) =>
                     <div onContextMenu={event => handleContextMenu(event, id)} key={key}>
                         <Draggable dragid={id} // for element movement
-                            className="fixed size-fit" style={{ left, top }} // absolute positioning on whiteboard
+                            className="fixed size-fit" // absolute positioning on whiteboard
                             left={left} top={top} // pass coordinates to Draggable
                             type={Dragtype.Moveable} //drag type
                         >
-                            {createElement(type, { ...props })}
+                            {obj}
                         </Draggable>
                         <ContextMenu id={id} />
                     </div>
