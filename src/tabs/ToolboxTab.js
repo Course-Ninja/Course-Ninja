@@ -1,19 +1,19 @@
 import MenuTile from "../components/MenuTile"
-import Draggable from "../drags/Draggable"
-import Dragtype from "../drags/Dragtype"
 import { gridLayout } from "../windows/EditorPane"
+import Button from "../components/Button"
 
 const ToolboxTab = () => {
+    const handleClick = () => {
+        alert("Hi")
+    }
     return (
         <div className={gridLayout}>
             <MenuTile>
-                <Draggable type={Dragtype.MenuTile}>
-                    <button disabled={false}>
-                        <p className="border-1 border-stone-950">
-                            Click me
-                        </p>
-                    </button>
-                </Draggable>
+                <Button onClick={handleClick} disabled={true}>
+                    <p className="border-1 border-stone-950">
+                        Click me
+                    </p>
+                </Button>
             </MenuTile>
         </div>
     )
