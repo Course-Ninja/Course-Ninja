@@ -2,7 +2,7 @@ import Circle from "../SVG/Circle"
 import Square from "../SVG/Square"
 import MenuTile from "../components/MenuTile"
 
-const Objects = () => {
+const ShapesTab = () => {
     const className = "grid grid-cols-2 auto-rows-min overflow-auto"
     return (
         <div className={className}>
@@ -22,4 +22,4 @@ const Objects = () => {
     )
 }
 
-export default Objects
+export default ShapesTab

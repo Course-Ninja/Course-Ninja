@@ -4,14 +4,14 @@ import { ElementsContext } from "../App"
 import { Children, createContext, useCallback, useContext, useState } from "react"
 import Tab from "../components/Tab"
 
-const defaultTab = "Objects"
+const defaultTab = "Shapes"
 export const TabContext = createContext(defaultTab)
 
 const EditorPane = ({ children }) => {
     const { setElements } = useContext(ElementsContext)
     const [activeTab, setActiveTab] = useState(defaultTab)
     const borderColour = "rgb(100 116 139)"
-    const borderSize = 4
+    const borderSize = 3
 
     const removeElement = useCallback(id => {
         setElements(elems => Object.fromEntries(
@@ -50,7 +50,7 @@ const EditorPane = ({ children }) => {
                                 borderWidth: `${borderSize}px`,
                                 borderTopColor: activeTab === child.props.id ? "transparent" : borderColour
                             }}
-                            className="rounded-b-lg">
+                            className="rounded-b-lg px-1">
                             {child.props.id}
                         </Tab>
                     )}

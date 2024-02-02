@@ -12,9 +12,7 @@ const Draggable = (props) => {
     const { left, top } = props
     return (
         <div ref={collected.isDragging ? dragpreview : drag} className={props.className} style={{ left, top }}>
-            <svg viewBox="0 0 100 100" className="size-full">
                 {props.children}
-            </svg>
         </div>
     )
 }

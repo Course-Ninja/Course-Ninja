@@ -1,4 +1,5 @@
 import Rectangle from "./Rectangle"
+import SVGWrapper from "./SVGWrapper"
 
 /**
  * 
@@ -8,7 +9,9 @@ import Rectangle from "./Rectangle"
  */
 
 const Square = (props) => {
-    return <Rectangle w={props.l} h={props.l} {...props}/>
+    return <SVGWrapper>
+        <Rectangle w={props.l} h={props.l} {...props} />
+    </SVGWrapper>
 }
 
 export default Square

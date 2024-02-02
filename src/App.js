@@ -2,9 +2,11 @@
 import './App.css';
 import EditorPane from './windows/EditorPane'
 import Whiteboard from './windows/Whiteboard';
-import Objects from './tabs/Objects';
-import Insert from './tabs/Insert';
+import ShapesTab from './tabs/ShapesTab';
+import InsertTab from './tabs/InsertTab';
+import TextTab from './tabs/TextTab';
 import { createContext, useState } from 'react';
+import ToolboxTab from './tabs/ToolboxTab';
 
 export const ElementsContext = createContext()
 
@@ -15,8 +17,10 @@ function App() {
       <div id="editor" className="flex grid grid-cols-4 h-dvh">
         <ElementsContext.Provider value={{elements, setElements}}>
           <EditorPane>
-            <Objects id="Objects"/>
-            <Insert id="Insert"/>
+            <ShapesTab id="Shapes"/>
+            <InsertTab id="Insert"/>
+            <TextTab id="Text"/>
+            <ToolboxTab id="Toolbox"/>
           </EditorPane>
           <Whiteboard><p>Whiteboard</p></Whiteboard>
         </ElementsContext.Provider>
