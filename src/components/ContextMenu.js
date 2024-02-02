@@ -1,10 +1,10 @@
 import { useCallback, useContext } from "react"
 import { Menu, Item, Separator, Submenu } from "react-contexify"
 import 'react-contexify/ReactContexify.css'
-import { Elements } from "../App"
+import { ElementsContext } from "../App"
 
 const ContextMenu = (props) => {
-    const { setElements } = useContext(Elements)
+    const { setElements } = useContext(ElementsContext)
     const remove = useCallback(id => 
         setElements(elems => Object.fromEntries(
             Object.entries(elems).filter(([key,]) => key !== id)
