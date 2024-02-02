@@ -3,7 +3,7 @@ import { Menu, Item, Separator, Submenu } from "react-contexify"
 import 'react-contexify/ReactContexify.css'
 import { ElementsContext } from "../App"
 
-const ContextMenu = (props) => {
+const ContextMenu = ({id}) => {
     const { setElements } = useContext(ElementsContext)
     const remove = useCallback(id => 
         setElements(elems => Object.fromEntries(
@@ -12,17 +12,17 @@ const ContextMenu = (props) => {
     , [setElements])
 
     return <>
-        <Menu id={props.id}>
-            <Item disabled>{props.id}</Item>
+        <Menu id={id}>
+            <Item disabled>{id}</Item>
             <Submenu label="Rotate">
                 <Item>Rotate clockwise 90 degrees</Item>
                 <Item>Rotate anti-clockwise 90 degrees</Item>
                 <Item>Flip horizontally</Item>
                 <Item>Flip vertically</Item>
             </Submenu>
-            <Separator></Separator>
+            <Separator/>
             <Item>Rename</Item>
-            <Item onClick={() => remove(props.id)}>Delete</Item>
+            <Item onClick={() => remove(id)}>Delete</Item>
         </Menu>
     </>
 }

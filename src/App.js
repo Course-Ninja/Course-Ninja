@@ -7,6 +7,9 @@ import InsertTab from './tabs/InsertTab';
 import TextTab from './tabs/TextTab';
 import { createContext, useState } from 'react';
 import ToolboxTab from './tabs/ToolboxTab';
+import ThemesTab from './tabs/ThemesTab';
+import DrawTab from './tabs/DrawTab';
+import ActionsTab from './tabs/ActionsTab';
 
 export const ElementsContext = createContext()
 
@@ -20,7 +23,10 @@ function App() {
             <ShapesTab id="Shapes"/>
             <InsertTab id="Insert"/>
             <TextTab id="Text"/>
+            <ThemesTab id="Themes"/>
+            <DrawTab id="Super long name"/>
             <ToolboxTab id="Toolbox"/>
+            <ActionsTab id="Actions"/>
           </EditorPane>
           <Whiteboard><p>Whiteboard</p></Whiteboard>
         </ElementsContext.Provider>

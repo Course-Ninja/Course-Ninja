@@ -6,7 +6,7 @@ import Tab from "../components/Tab"
 
 const defaultTab = "Shapes"
 export const TabContext = createContext(defaultTab)
-export const gridLayout = "grid grid-cols-2 auto-rows-min overflow-auto"
+export const gridLayout = "grid grid-cols-2 auto-rows-min"
 
 const EditorPane = ({ children }) => {
     const { setElements } = useContext(ElementsContext)
@@ -30,8 +30,8 @@ const EditorPane = ({ children }) => {
         })
     }))
 
-    return <div ref={drop} className={`flex flex-col justify-between relative ${isOver ? "bg-red-400" : ""}`}>
-        <div className={`flex absolute w-full h-full justify-center items-center ${isOver ? "" : "hidden"}`}>
+    return <div ref={drop} className={`overflow-y-auto relative flex flex-col justify-between`}>
+        <div className={`flex absolute w-full h-full justify-center items-center ${isOver ? "bg-red-400 opacity-90" : "hidden"}`}>
             <p className="text-2xl font-bold">Delete</p>
         </div>
         <div>
@@ -41,7 +41,7 @@ const EditorPane = ({ children }) => {
                 </div>
             )}
         </div>
-        <div className="flex">
+        <div className="flex overflow-x-auto fixed bottom-0 bg-white w-1/4">
             <TabContext.Provider value={{ activeTab, setActiveTab }}>
                 <div className="flex">
                     {Children.map(children, (child, key) =>

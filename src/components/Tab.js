@@ -8,7 +8,9 @@ const Tab = ({ id, children, className, style }) => {
         setActiveTab(id)
     }, [setActiveTab, id])
 
-    return <p onClick={switchTab} className="rounded-b-lg px-1 select-none cursor-pointer" style={style}>{children}</p>
+    return <p onClick={switchTab}
+        className="rounded-b-lg px-1 select-none whitespace-nowrap cursor-pointer"
+        style={style}>{children}</p>
 }
 
 export default Tab
