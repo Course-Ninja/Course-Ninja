@@ -1,5 +1,4 @@
 import Rectangle from "./Rectangle"
-import SVGWrapper from "./SVGWrapper"
 
 /**
  * 

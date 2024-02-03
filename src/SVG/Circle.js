@@ -1,5 +1,4 @@
 import Ellipse from "./Ellipse"
-import SVGWrapper from "./SVGWrapper"
 
 /**
  * 
