@@ -1,7 +1,7 @@
 import { useCallback, useContext } from "react"
 import { TabContext } from "../windows/EditorPane"
 
-const Tab = ({ id, children, className, style }) => {
+const Tab = ({ id, children, style }) => {
     const { setActiveTab } = useContext(TabContext)
 
     const switchTab = useCallback(() => {
@@ -9,7 +9,7 @@ const Tab = ({ id, children, className, style }) => {
     }, [setActiveTab, id])
 
     return <p onClick={switchTab}
-        className="rounded-b-lg px-1 select-none whitespace-nowrap cursor-pointer"
+        className="aspect-square rounded-l-lg px-1 select-none whitespace-nowrap cursor-pointer flex flex-none justify-center items-center"
         style={style}>{children}</p>
 }
 

@@ -20,13 +20,13 @@ function App() {
       <div id="editor" className="flex h-dvh">
         <ElementsContext.Provider value={{elements, setElements}}>
           <EditorPane width="25%">
-            <ShapesTab id="Shapes"/>
-            <InsertTab id="Insert"/>
-            <TextTab id="Text"/>
-            <ThemesTab id="Themes"/>
-            <DrawTab id="Super long name"/>
-            <ToolboxTab id="Toolbox"/>
-            <ActionsTab id="Actions"/>
+            <ShapesTab id="Shapes"></ShapesTab>
+            <InsertTab id="Insert"></InsertTab>
+            <TextTab id="Text"></TextTab>
+            <ThemesTab id="Themes"></ThemesTab>
+            <DrawTab id="Super long name"></DrawTab>
+            <ToolboxTab id="Toolbox"></ToolboxTab>
+            <ActionsTab id="Actions"></ActionsTab>
           </EditorPane>
           <Whiteboard width="75%"><p>Whiteboard</p></Whiteboard>
         </ElementsContext.Provider>
