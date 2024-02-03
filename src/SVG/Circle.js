@@ -10,9 +10,7 @@ import SVGWrapper from "./SVGWrapper"
  */
 
 const Circle = (props) => {
-    return <SVGWrapper>
-        <Ellipse rx={props.d ? props.d / 2 : props.r} ry={props.d ? props.d / 2 : props.r} {...props} />
-    </SVGWrapper>
+    return <Ellipse rx={props.d ? props.d / 2 : props.r} ry={props.d ? props.d / 2 : props.r} {...props} />
 }
 
 export default Circle

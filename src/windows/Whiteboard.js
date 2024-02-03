@@ -7,9 +7,9 @@ import ContextMenu, { MENU_ID } from "../components/ContextMenu"
 import { useContextMenu } from "react-contexify"
 import { ElementsContext } from "../App"
 
-const Whiteboard = (props) => {
+const Whiteboard = ({ children, width }) => {
     const tileSize = 150 // arbitrary value for center of tile, remove once better method is found
-    const className = "rounded-md border-4 border-slate-500 col-span-3 flex items-center justify-center relative"
+    const className = "rounded-md border-4 border-slate-500 w-3/4 flex items-center justify-center relative"
     const { elements, setElements } = useContext(ElementsContext)
     const ref = useRef(null)
 
@@ -62,7 +62,7 @@ const Whiteboard = (props) => {
                 drop(el)
                 ref.current = el
             }
-        } className={className} {...props}>
+        } className={className} style={{width}}>
             {Object.entries(elements).length ? Object.entries(elements).map(
                 ([id, { obj, left, top }], key) =>
                     <div onContextMenu={event => handleContextMenu(event, id)} key={key}>
@@ -75,7 +75,7 @@ const Whiteboard = (props) => {
                         </Draggable>
                         <ContextMenu id={id} />
                     </div>
-            ) : "Whiteboard"}
+            ) : children}
         </div>
     )
 }

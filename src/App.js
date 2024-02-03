@@ -7,6 +7,9 @@ import InsertTab from './tabs/InsertTab';
 import TextTab from './tabs/TextTab';
 import { createContext, useState } from 'react';
 import ToolboxTab from './tabs/ToolboxTab';
+import ThemesTab from './tabs/ThemesTab';
+import DrawTab from './tabs/DrawTab';
+import ActionsTab from './tabs/ActionsTab';
 
 export const ElementsContext = createContext()
 
@@ -14,15 +17,18 @@ function App() {
   const [elements, setElements] = useState({})
   return (
     <div className="App">
-      <div id="editor" className="flex grid grid-cols-4 h-dvh">
-        <ElementsContext.Provider value={{elements, setElements}}>
-          <EditorPane>
-            <ShapesTab id="Shapes"/>
-            <InsertTab id="Insert"/>
-            <TextTab id="Text"/>
-            <ToolboxTab id="Toolbox"/>
+      <div id="editor" className="flex h-dvh">
+        <ElementsContext.Provider value={{ elements, setElements }}>
+          <EditorPane width="25%">
+            <ShapesTab name="Shapes"></ShapesTab>
+            <InsertTab name="Insert"></InsertTab>
+            <TextTab name="Text"></TextTab>
+            <ThemesTab name="Themes"></ThemesTab>
+            <DrawTab name="Super long name"></DrawTab>
+            <ToolboxTab name="Toolbox"></ToolboxTab>
+            <ActionsTab name="Actions"></ActionsTab>
           </EditorPane>
-          <Whiteboard><p>Whiteboard</p></Whiteboard>
+          <Whiteboard width="75%"><p>Whiteboard</p></Whiteboard>
         </ElementsContext.Provider>
       </div>
       {/* <header className="App-header">
