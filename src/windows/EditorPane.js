@@ -8,7 +8,7 @@ const defaultTab = "Shapes"
 export const TabContext = createContext(defaultTab)
 export const gridLayout = "grid grid-cols-2 auto-rows-min"
 
-const EditorPane = ({ children }) => {
+const EditorPane = ({ children, width }) => {
     const { setElements } = useContext(ElementsContext)
     const [activeTab, setActiveTab] = useState(defaultTab)
     const borderColour = "rgb(100 116 139)"
@@ -30,9 +30,9 @@ const EditorPane = ({ children }) => {
         })
     }))
 
-    return <div ref={drop} className={`overflow-y-auto relative flex flex-col justify-between`}>
-        <div className={`flex absolute w-full h-full justify-center items-center ${isOver ? "bg-red-400 opacity-90" : "hidden"}`}>
-            <p className="text-2xl font-bold">Delete</p>
+    return <div ref={drop} className="overflow-y-auto relative flex flex-col" style={{width}}>
+        <div className={`flex fixed size-full ${isOver ? "bg-red-400 opacity-90" : "hidden"}`} style={{width}}>
+            <p className="text-2xl font-bold m-auto">Delete</p>
         </div>
         <div>
             {Children.map(children, child =>
@@ -41,7 +41,7 @@ const EditorPane = ({ children }) => {
                 </div>
             )}
         </div>
-        <div className="flex overflow-x-auto fixed bottom-0 bg-white w-1/4">
+        <div className="flex overflow-x-auto fixed bottom-0 bg-white" style={{width}}>
             <TabContext.Provider value={{ activeTab, setActiveTab }}>
                 <div className="flex">
                     {Children.map(children, (child, key) =>

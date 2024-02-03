@@ -17,9 +17,9 @@ function App() {
   const [elements, setElements] = useState({})
   return (
     <div className="App">
-      <div id="editor" className="flex grid grid-cols-4 h-dvh">
+      <div id="editor" className="flex h-dvh">
         <ElementsContext.Provider value={{elements, setElements}}>
-          <EditorPane>
+          <EditorPane width="25%">
             <ShapesTab id="Shapes"/>
             <InsertTab id="Insert"/>
             <TextTab id="Text"/>
@@ -28,7 +28,7 @@ function App() {
             <ToolboxTab id="Toolbox"/>
             <ActionsTab id="Actions"/>
           </EditorPane>
-          <Whiteboard><p>Whiteboard</p></Whiteboard>
+          <Whiteboard width="75%"><p>Whiteboard</p></Whiteboard>
         </ElementsContext.Provider>
       </div>
       {/* <header className="App-header">
