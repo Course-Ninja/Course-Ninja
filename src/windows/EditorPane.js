@@ -39,7 +39,7 @@ const EditorPane = ({ children, width }) => {
         </TabContext.Provider>
         <div>
             {Children.map(children, child =>
-                <div className={activeTab === child.props.id ? "" : "hidden"}>
+                <div className={activeTab === child.props.name ? "" : "hidden"}>
                     {child}
                 </div>
             )}

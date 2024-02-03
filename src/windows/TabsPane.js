@@ -10,14 +10,14 @@ const TabsPane = ({ children }) => {
     return (
         <div className="flex flex-col flex-none overflow-y-auto hidescroll">
             {Children.map(children, (child, key) =>
-                <Tab id={child.props.id} key={key}
+                <Tab name={child.props.name} key={key}
                     style={{
                         borderColor: borderColour,
                         borderWidth: `${borderSize}px`,
-                        borderRightColor: activeTab === child.props.id ? "transparent" : borderColour
+                        borderRightColor: activeTab === child.props.name ? "transparent" : borderColour
                     }}
                 >
-                    {child.props.id}
+                    {child.props.children}
                 </Tab>
             )}
             <div className="h-full"

@@ -18,15 +18,15 @@ function App() {
   return (
     <div className="App">
       <div id="editor" className="flex h-dvh">
-        <ElementsContext.Provider value={{elements, setElements}}>
+        <ElementsContext.Provider value={{ elements, setElements }}>
           <EditorPane width="25%">
-            <ShapesTab id="Shapes"></ShapesTab>
-            <InsertTab id="Insert"></InsertTab>
-            <TextTab id="Text"></TextTab>
-            <ThemesTab id="Themes"></ThemesTab>
-            <DrawTab id="Super long name"></DrawTab>
-            <ToolboxTab id="Toolbox"></ToolboxTab>
-            <ActionsTab id="Actions"></ActionsTab>
+            <ShapesTab name="Shapes"></ShapesTab>
+            <InsertTab name="Insert"></InsertTab>
+            <TextTab name="Text"></TextTab>
+            <ThemesTab name="Themes"></ThemesTab>
+            <DrawTab name="Super long name"></DrawTab>
+            <ToolboxTab name="Toolbox"></ToolboxTab>
+            <ActionsTab name="Actions"></ActionsTab>
           </EditorPane>
           <Whiteboard width="75%"><p>Whiteboard</p></Whiteboard>
         </ElementsContext.Provider>

@@ -1,16 +1,19 @@
 import { useCallback, useContext } from "react"
 import { TabContext } from "../windows/EditorPane"
 
-const Tab = ({ id, children, style }) => {
+const Tab = ({ name, children, style }) => {
     const { setActiveTab } = useContext(TabContext)
 
     const switchTab = useCallback(() => {
-        setActiveTab(id)
-    }, [setActiveTab, id])
+        setActiveTab(name)
+    }, [setActiveTab, name])
 
-    return <p onClick={switchTab}
-        className="aspect-square rounded-l-lg px-1 select-none whitespace-nowrap cursor-pointer flex flex-none justify-center items-center"
-        style={style}>{children}</p>
+    return <div onClick={switchTab}
+        className="aspect-square rounded-l-lg cursor-pointer flex flex-col flex-none justify-center items-center"
+        style={style}>
+        {children}
+        <p className="whitespace-nowrap select-none px-1">{name}</p>
+    </div>
 }
 
 export default Tab
