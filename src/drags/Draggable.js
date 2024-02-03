@@ -1,18 +1,18 @@
 import { useDrag } from "react-dnd"
+import Dragtype from "./Dragtype"
 
-const Draggable = (props) => {
+const Draggable = ({ type = Dragtype.MenuTile, dragid: id, children, left, top, className }) => {
     const [collected, drag, dragpreview] = useDrag(() => ({
-        type: props.type,
-        item: { id: props.dragid, obj: props.children, left: props.left, top: props.top },
+        type,
+        item: { id, obj: children, left, top },
         collect: (monitor) => ({
             isDragging: monitor.isDragging()
         })
     }))
 
-    const { left, top } = props
     return (
-        <div ref={collected.isDragging ? dragpreview : drag} className={`${props.className} cursor-move`} style={{ left, top }}>
-                {props.children}
+        <div ref={collected.isDragging ? dragpreview : drag} className={`${className} cursor-move`} style={{ left, top }}>
+            {children}
         </div>
     )
 }

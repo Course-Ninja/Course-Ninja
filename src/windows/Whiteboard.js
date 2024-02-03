@@ -19,33 +19,33 @@ const Whiteboard = ({ children, width }) => {
         }, [setElements]
     )
 
-    const moveElement = useCallback(
-        ({ id, obj }, left, top) => {
-            setElements(elems => ({ ...elems, [id]: { obj, left, top } }))
-        }, [setElements]
-    )
-
-    const [, drop] = useDrop(() => ({
+    const [, drop] = useDrop({
         drop: (item, monitor) => {
-            const delta = monitor.getClientOffset()
-            const left = Math.round(delta.x - tileSize)
-            const top = Math.round(delta.y - tileSize)
+            var delta = monitor.getClientOffset()
+            var left = delta.x
+            var top = delta.y
             switch (monitor.getItemType()) {
                 case Dragtype.MenuTile:
-                    addElement(item, left, top)
+                    addElement(item, Math.round(left - tileSize), Math.round(top - tileSize))
                     return undefined
                 case Dragtype.Moveable:
-                    // const deltamove = monitor.getDifferenceFromInitialOffset()
+                    delta = monitor.getDifferenceFromInitialOffset()
+                    left = delta.x
+                    top = delta.y
                     // const leftmove = Math.round(item.left + deltamove.x)
                     // const topmove = Math.round(item.top + deltamove.y)
+                    // console.log(`Left: ${item.left}, delta: ${deltamove.x} final: ${leftmove}`)
+                    // console.log(`Top: ${item.top}, delta: ${deltamove.y} final: ${topmove}`)
                     // moveElement(item, leftmove, topmove)
-                    moveElement(item, left, top)
+                    console.log(`Left: ${item.left}, delta: ${delta.x} final: ${left}`)
+                    console.log(`Top: ${item.top}, delta: ${delta.y} final: ${top}`)
+                    addElement(item, Math.round(left), Math.round(top))
                     return undefined
                 default:
             }
         },
         accept: [Dragtype.MenuTile, Dragtype.Moveable]
-    }))
+    })
 
     const { show } = useContextMenu({ id: MENU_ID })
     const handleContextMenu = (event, id) => {

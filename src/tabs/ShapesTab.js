@@ -1,7 +1,7 @@
 import Circle from "../SVG/Circle"
 import Square from "../SVG/Square"
 import MenuTile from "../components/MenuTile"
-import { gridLayout } from "../windows/EditorPane"
+import { gridLayout } from "../components/utils"
 
 const ShapesTab = () => {
     return (

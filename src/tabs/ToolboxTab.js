@@ -1,5 +1,5 @@
 import MenuTile from "../components/MenuTile"
-import { gridLayout } from "../windows/EditorPane"
+import { gridLayout } from "../components/utils"
 import Button from "../components/Button"
 
 const ToolboxTab = () => {
