@@ -10,12 +10,12 @@ import { ElementsContext } from "../App"
 const Whiteboard = ({ children, width }) => {
     const tileSize = 150 // arbitrary value for center of tile, remove once better method is found
     const className = "rounded-md border-4 border-slate-500 w-3/4 flex items-center justify-center relative"
-    const { elements, setElements } = useContext(ElementsContext)
+    const { elements, setElements, objRef } = useContext(ElementsContext)
     const ref = useRef(null)
 
     const addElement = useCallback(
-        ({ id, obj }, left, top) => {
-            setElements(elems => ({ ...elems, [id ? id : uuid()]: { obj, left, top } }))
+        ({ dragid, id }, left, top) => {
+            setElements(elems => ({ ...elems, [dragid ? dragid : uuid()]: { id, left, top } }))
         }, [setElements]
     )
 
@@ -39,7 +39,7 @@ const Whiteboard = ({ children, width }) => {
                     // moveElement(item, leftmove, topmove)
                     console.log(`Left: ${item.left}, delta: ${delta.x} final: ${left}`)
                     console.log(`Top: ${item.top}, delta: ${delta.y} final: ${top}`)
-                    addElement(item, Math.round(left), Math.round(top))
+                    addElement(item, Math.round(item.left + left), Math.round(item.top + top))
                     return undefined
                 default:
             }
@@ -62,18 +62,20 @@ const Whiteboard = ({ children, width }) => {
                 drop(el)
                 ref.current = el
             }
-        } className={className} style={{width}}>
+        } className={className} style={{ width }}>
             {Object.entries(elements).length ? Object.entries(elements).map(
-                ([id, { obj, left, top }], key) =>
-                    <div onContextMenu={event => handleContextMenu(event, id)} key={key}>
-                        <Draggable dragid={id} // for element movement
+                ([dragid, { id, left, top }], key) =>
+                    <div onContextMenu={event => handleContextMenu(event, dragid)} key={key}>
+                        <Draggable dragid={dragid} // for element movement
+                            id={id}
+                            key={key}
                             className="fixed size-fit" // absolute positioning on whiteboard
                             left={left} top={top} // pass coordinates to Draggable
                             type={Dragtype.Moveable} //drag type
                         >
-                            {obj}
+                            {objRef[id]}
                         </Draggable>
-                        <ContextMenu id={id} />
+                        <ContextMenu id={dragid} />
                     </div>
             ) : children}
         </div>

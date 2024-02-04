@@ -15,10 +15,11 @@ export const ElementsContext = createContext()
 
 function App() {
   const [elements, setElements] = useState({})
+  const [objRef, setObjRefs] = useState({})
   return (
     <div className="App">
       <div id="editor" className="flex h-dvh">
-        <ElementsContext.Provider value={{ elements, setElements }}>
+        <ElementsContext.Provider value={{ elements, setElements, objRef, setObjRefs}}>
           <EditorPane width="25%">
             <ShapesTab name="Shapes"></ShapesTab>
             <InsertTab name="Insert"></InsertTab>

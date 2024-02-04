@@ -8,7 +8,7 @@ const ToolboxTab = () => {
     }
     return (
         <div className={gridLayout}>
-            <MenuTile>
+            <MenuTile id="button">
                 <Button onClick={handleClick} disabled={true}>
                     <p className="border-1 border-stone-950">
                         Click me

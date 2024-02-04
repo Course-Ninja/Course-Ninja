@@ -13,8 +13,8 @@ const EditorPane = ({ children, width }) => {
     const removeElement = useDelete()
     const [{ isOver }, drop] = useDrop(() => ({
         accept: [Dragtype.Moveable],
-        drop: ({ id }) => {
-            removeElement(id)
+        drop: ({ dragid }) => {
+            removeElement(dragid)
         },
         collect: monitor => ({
             isOver: monitor.isOver()
