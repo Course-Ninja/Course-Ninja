@@ -30,7 +30,7 @@ const EditorPane = ({ children, width }) => {
                 {children}
             </TabsPane>
         </TabContext.Provider>
-        <div className="w-full">
+        <div className="w-full overflow-y-auto">
             {Children.map(children, child =>
                 <div className={activeTab === child.props.name ? "" : "hidden"}>
                     {child}
