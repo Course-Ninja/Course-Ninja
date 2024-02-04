@@ -10,7 +10,7 @@ import SVGWrapper from "./SVGWrapper"
 
 const Ellipse = (props) => {
     return <SVGWrapper>
-        <ellipse cx={props.x} cy={props.y} {...props} />)
+        <ellipse cx={props.x} cy={props.y} {...props} />
     </SVGWrapper>
 }
 

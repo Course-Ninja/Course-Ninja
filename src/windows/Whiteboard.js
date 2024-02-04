@@ -1,16 +1,15 @@
 import { useCallback, useContext, useEffect } from "react"
 import { useDrop } from "react-dnd"
+import { useContextMenu } from "react-contexify"
+import { v4 as uuid } from "uuid"
 import Draggable from "../drags/Draggable"
 import Dragtype from "../drags/Dragtype"
-import { v4 as uuid } from "uuid"
 import ContextMenu from "../components/ContextMenu"
-import { useContextMenu } from "react-contexify"
 import { ElementsContext } from "../App"
 
 const Whiteboard = ({ children, width }) => {
     const className = "rounded-md border-4 border-slate-500 w-3/4 flex items-center justify-center relative"
     const { elements, setElements, objRef } = useContext(ElementsContext)
-    // const ref = useRef(null)
 
     const addElement = useCallback(
         ({ dragid, id }, left, top) => {
@@ -26,16 +25,15 @@ const Whiteboard = ({ children, width }) => {
                     delta = monitor.getClientOffset()
                     left = delta.x
                     top = delta.y
-                    addElement(item, Math.round(left), Math.round(top))
-                    return undefined
+                    break
                 case Dragtype.Moveable:
                     delta = monitor.getDifferenceFromInitialOffset()
-                    left = delta.x
-                    top = delta.y
-                    addElement(item, Math.round(item.left + left), Math.round(item.top + top))
-                    return undefined
+                    left = delta.x + item.left
+                    top = delta.y + item.top
+                    break
                 default:
             }
+            addElement(item, Math.round(left), Math.round(top))
         },
         accept: [Dragtype.MenuTile, Dragtype.Moveable]
     })
@@ -57,10 +55,6 @@ const Whiteboard = ({ children, width }) => {
                         <Draggable dragid={dragid} // for element movement
                             {...obj}
                             className="fixed size-fit" // absolute positioning on whiteboard
-                            // id={id}
-                            // key={key}
-                            // left={left} top={top} // pass coordinates to Draggable
-                            // initial={initial}
                             type={Dragtype.Moveable} //drag type
                         >
                             {objRef[obj.id]}

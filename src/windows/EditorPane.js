@@ -1,6 +1,6 @@
+import { Children, createContext, useState } from "react"
 import { useDrop } from "react-dnd"
 import Dragtype from "../drags/Dragtype"
-import { Children, createContext, useState } from "react"
 import TabsPane from "./TabsPane"
 import { useDelete } from "../components/utils"
 

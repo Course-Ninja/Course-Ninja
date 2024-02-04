@@ -12,6 +12,7 @@ const MenuTile = (props) => {
 
     useEffect(() =>
         setObjRefs(objs => ({ ...objs, [id]: child }))
+        // DO NOT DELETE THIS AND NEXT COMMENT
         // eslint-disable-next-line react-hooks/exhaustive-deps
         , [])
 

@@ -25,7 +25,7 @@ function App() {
             <InsertTab name="Insert"></InsertTab>
             <TextTab name="Text"></TextTab>
             <ThemesTab name="Themes"></ThemesTab>
-            <DrawTab name="Super long name"></DrawTab>
+            <DrawTab name="Draw"></DrawTab>
             <ToolboxTab name="Toolbox"></ToolboxTab>
             <ActionsTab name="Actions"></ActionsTab>
           </EditorPane>

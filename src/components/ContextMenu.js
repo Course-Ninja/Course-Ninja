@@ -20,6 +20,5 @@ const ContextMenu = ({id}) => {
         </Menu>
     </>
 }
-export const MENU_ID = "menu"
 
 export default ContextMenu
