@@ -1,5 +1,5 @@
 import MenuTile from "../components/MenuTile"
-import { gridLayout } from "../windows/EditorPane"
+import { gridLayout } from "../components/utils"
 import Button from "../components/Button"
 
 const ToolboxTab = () => {
@@ -8,10 +8,10 @@ const ToolboxTab = () => {
     }
     return (
         <div className={gridLayout}>
-            <MenuTile>
+            <MenuTile id="button">
                 <Button onClick={handleClick} disabled={true}>
                     <p className="border-1 border-stone-950">
-                        Click me
+                        Button
                     </p>
                 </Button>
             </MenuTile>

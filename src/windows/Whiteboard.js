@@ -1,53 +1,44 @@
-import { useCallback, useContext, useEffect, useRef } from "react"
+import { useCallback, useContext, useEffect } from "react"
 import { useDrop } from "react-dnd"
+import { useContextMenu } from "react-contexify"
+import { v4 as uuid } from "uuid"
 import Draggable from "../drags/Draggable"
 import Dragtype from "../drags/Dragtype"
-import { v4 as uuid } from "uuid"
-import ContextMenu, { MENU_ID } from "../components/ContextMenu"
-import { useContextMenu } from "react-contexify"
+import ContextMenu from "../components/ContextMenu"
 import { ElementsContext } from "../App"
 
 const Whiteboard = ({ children, width }) => {
-    const tileSize = 150 // arbitrary value for center of tile, remove once better method is found
     const className = "rounded-md border-4 border-slate-500 w-3/4 flex items-center justify-center relative"
-    const { elements, setElements } = useContext(ElementsContext)
-    const ref = useRef(null)
+    const { elements, setElements, objRef } = useContext(ElementsContext)
 
     const addElement = useCallback(
-        ({ id, obj }, left, top) => {
-            setElements(elems => ({ ...elems, [id ? id : uuid()]: { obj, left, top } }))
+        ({ dragid, id }, left, top) => {
+            setElements(elems => ({ ...elems, [dragid ? dragid : uuid()]: { id, left, top, initial: !dragid } }))
         }, [setElements]
     )
 
-    const moveElement = useCallback(
-        ({ id, obj }, left, top) => {
-            setElements(elems => ({ ...elems, [id]: { obj, left, top } }))
-        }, [setElements]
-    )
-
-    const [, drop] = useDrop(() => ({
+    const [, drop] = useDrop({
         drop: (item, monitor) => {
-            const delta = monitor.getClientOffset()
-            const left = Math.round(delta.x - tileSize)
-            const top = Math.round(delta.y - tileSize)
+            var delta, left, top
             switch (monitor.getItemType()) {
                 case Dragtype.MenuTile:
-                    addElement(item, left, top)
-                    return undefined
+                    delta = monitor.getClientOffset()
+                    left = delta.x
+                    top = delta.y
+                    break
                 case Dragtype.Moveable:
-                    // const deltamove = monitor.getDifferenceFromInitialOffset()
-                    // const leftmove = Math.round(item.left + deltamove.x)
-                    // const topmove = Math.round(item.top + deltamove.y)
-                    // moveElement(item, leftmove, topmove)
-                    moveElement(item, left, top)
-                    return undefined
+                    delta = monitor.getDifferenceFromInitialOffset()
+                    left = delta.x + item.left
+                    top = delta.y + item.top
+                    break
                 default:
             }
+            addElement(item, Math.round(left), Math.round(top))
         },
         accept: [Dragtype.MenuTile, Dragtype.Moveable]
-    }))
+    })
 
-    const { show } = useContextMenu({ id: MENU_ID })
+    const { show } = useContextMenu()
     const handleContextMenu = (event, id) => {
         show({ event, id })
     }
@@ -57,23 +48,18 @@ const Whiteboard = ({ children, width }) => {
     }, [elements])
 
     return (
-        <div ref={
-            el => {
-                drop(el)
-                ref.current = el
-            }
-        } className={className} style={{width}}>
+        <div ref={drop} className={className} style={{ width }}>
             {Object.entries(elements).length ? Object.entries(elements).map(
-                ([id, { obj, left, top }], key) =>
-                    <div onContextMenu={event => handleContextMenu(event, id)} key={key}>
-                        <Draggable dragid={id} // for element movement
+                ([dragid, obj], key) =>
+                    <div onContextMenu={event => handleContextMenu(event, dragid)} key={key}>
+                        <Draggable dragid={dragid} // for element movement
+                            {...obj}
                             className="fixed size-fit" // absolute positioning on whiteboard
-                            left={left} top={top} // pass coordinates to Draggable
                             type={Dragtype.Moveable} //drag type
                         >
-                            {obj}
+                            {objRef[obj.id]}
                         </Draggable>
-                        <ContextMenu id={id} />
+                        <ContextMenu id={dragid} />
                     </div>
             ) : children}
         </div>

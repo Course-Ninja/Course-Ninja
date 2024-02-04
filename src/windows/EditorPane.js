@@ -1,27 +1,20 @@
+import { Children, createContext, useState } from "react"
 import { useDrop } from "react-dnd"
 import Dragtype from "../drags/Dragtype"
-import { ElementsContext } from "../App"
-import { Children, createContext, useCallback, useContext, useState } from "react"
 import TabsPane from "./TabsPane"
+import { useDelete } from "../components/utils"
 
 const defaultTab = "Shapes"
 export const TabContext = createContext(defaultTab)
-export const gridLayout = "grid grid-cols-2 auto-rows-min"
 
 const EditorPane = ({ children, width }) => {
-    const { setElements } = useContext(ElementsContext)
     const [activeTab, setActiveTab] = useState(defaultTab)
 
-    const removeElement = useCallback(id => {
-        setElements(elems => Object.fromEntries(
-            Object.entries(elems).filter(([key,]) => key !== id)
-        ))
-    }, [setElements])
-
+    const removeElement = useDelete()
     const [{ isOver }, drop] = useDrop(() => ({
         accept: [Dragtype.Moveable],
-        drop: ({ id }) => {
-            removeElement(id)
+        drop: ({ dragid }) => {
+            removeElement(dragid)
         },
         collect: monitor => ({
             isOver: monitor.isOver()
@@ -37,7 +30,7 @@ const EditorPane = ({ children, width }) => {
                 {children}
             </TabsPane>
         </TabContext.Provider>
-        <div className="w-full">
+        <div className="w-full overflow-y-auto">
             {Children.map(children, child =>
                 <div className={activeTab === child.props.name ? "" : "hidden"}>
                     {child}
