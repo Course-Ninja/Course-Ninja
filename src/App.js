@@ -29,7 +29,7 @@ function App() {
             <ToolboxTab name="Toolbox"></ToolboxTab>
             <ActionsTab name="Actions"></ActionsTab>
           </EditorPane>
-          <Whiteboard width="75%"><p>Whiteboard</p></Whiteboard>
+          <Whiteboard width="75%"><p className="select-none">Whiteboard</p></Whiteboard>
         </ElementsContext.Provider>
       </div>
       {/* <header className="App-header">

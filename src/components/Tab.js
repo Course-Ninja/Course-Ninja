@@ -9,7 +9,7 @@ const Tab = ({ name, children, style }) => {
     }, [setActiveTab, name])
 
     return <div onClick={switchTab}
-        className="aspect-square rounded-l-lg cursor-pointer flex flex-col flex-none justify-center items-center"
+        className="aspect-square rounded-l-lg cursor-pointer flex flex-col flex-none justify-center items-center hover:bg-indigo-700 hover:text-white"
         style={style}>
         {children}
         <p className="whitespace-nowrap select-none px-1">{name}</p>
