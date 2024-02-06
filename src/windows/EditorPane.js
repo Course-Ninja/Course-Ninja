@@ -21,7 +21,7 @@ const EditorPane = ({ children, width }) => {
         })
     }))
 
-    return <div ref={drop} className="flex z-50 bg-white" style={{ width }}>
+    return <div ref={drop} className="flex z-50 bg-lime-50" style={{ width }}>
         <div className={`flex fixed size-full bg-red-400 opacity-90 ${isOver ? "" : "hidden"}`} style={{ width }}>
             <p className="text-2xl font-bold m-auto">Delete</p>
         </div>
