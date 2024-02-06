@@ -22,7 +22,7 @@ const EditorPane = ({ children, width }) => {
     }))
 
     return <div ref={drop} className="flex" style={{ width }}>
-        <div className={`flex fixed size-full ${isOver ? "bg-red-400 opacity-90" : "hidden"}`} style={{ width }}>
+        <div className={`flex fixed size-full bg-red-400 opacity-90 ${isOver ? "" : "hidden"}`} style={{ width }}>
             <p className="text-2xl font-bold m-auto">Delete</p>
         </div>
         <TabContext.Provider value={{ activeTab, setActiveTab }}>

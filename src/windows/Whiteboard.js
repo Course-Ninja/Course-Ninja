@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { useDrop } from "react-dnd"
 import { useContextMenu } from "react-contexify"
 import { v4 as uuid } from "uuid"
@@ -10,12 +10,6 @@ import { ElementsContext } from "../App"
 const Whiteboard = ({ children, width }) => {
     const className = "rounded-md border-4 border-slate-500 w-3/4 flex items-center justify-center relative"
     const { elements, setElements, objRef } = useContext(ElementsContext)
-
-    const addElement = useCallback(
-        ({ dragid, id }, left, top) => {
-            setElements(elems => ({ ...elems, [dragid ? dragid : uuid()]: { id, left, top, initial: !dragid } }))
-        }, [setElements]
-    )
 
     const [, drop] = useDrop({
         drop: (item, monitor) => {
@@ -33,15 +27,13 @@ const Whiteboard = ({ children, width }) => {
                     break
                 default:
             }
-            addElement(item, Math.round(left), Math.round(top))
+            const { dragid, id } = item
+            setElements(elems => ({ ...elems, [dragid ? dragid : uuid()]: { id, left, top, initial: !dragid } }))
         },
         accept: [Dragtype.MenuTile, Dragtype.Moveable]
     })
 
     const { show } = useContextMenu()
-    const handleContextMenu = (event, id) => {
-        show({ event, id })
-    }
 
     useEffect(() => {
         window.onbeforeunload = () => Object.entries(elements).length ? true : undefined
@@ -51,7 +43,7 @@ const Whiteboard = ({ children, width }) => {
         <div ref={drop} className={className} style={{ width }}>
             {Object.entries(elements).length ? Object.entries(elements).map(
                 ([dragid, obj], key) =>
-                    <div onContextMenu={event => handleContextMenu(event, dragid)} key={key}>
+                    <div onContextMenu={event => show({ event, id: dragid })} key={key}>
                         <Draggable dragid={dragid} // for element movement
                             {...obj}
                             className="fixed size-fit" // absolute positioning on whiteboard
