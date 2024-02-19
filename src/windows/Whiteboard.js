@@ -13,22 +13,13 @@ const Whiteboard = ({ children, width }) => {
 
     const [, drop] = useDrop({
         drop: (item, monitor) => {
-            var delta, left, top
-            switch (monitor.getItemType()) {
-                case Dragtype.MenuTile:
-                    delta = monitor.getClientOffset()
-                    left = delta.x
-                    top = delta.y
-                    break
-                case Dragtype.Moveable:
-                    delta = monitor.getDifferenceFromInitialOffset()
-                    left = delta.x + item.left
-                    top = delta.y + item.top
-                    break
-                default:
+            if (monitor.getItemType() === Dragtype.MenuTile) {
+                const delta = monitor.getClientOffset()
+                const left = delta.x
+                const top = delta.y
+                const { id } = item
+                setElements(elems => ({ ...elems, [uuid()]: { id, left, top, initial: true } }))
             }
-            const { dragid, id } = item
-            setElements(elems => ({ ...elems, [dragid ? dragid : uuid()]: { id, left, top, initial: !dragid } }))
         },
         hover: (item, monitor) => {
             if (monitor.getItemType() === Dragtype.Moveable) {
@@ -36,7 +27,7 @@ const Whiteboard = ({ children, width }) => {
                 const left = delta.x + item.left
                 const top = delta.y + item.top
                 const { dragid, id } = item
-                setElements(elems => ({ ...elems, [dragid ? dragid : uuid()]: { id, left, top, initial: !dragid } }))
+                setElements(elems => ({ ...elems, [dragid]: { id, left, top, initial: false } }))
             }
         },
         accept: [Dragtype.MenuTile, Dragtype.Moveable]
