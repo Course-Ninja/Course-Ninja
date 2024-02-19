@@ -30,6 +30,15 @@ const Whiteboard = ({ children, width }) => {
             const { dragid, id } = item
             setElements(elems => ({ ...elems, [dragid ? dragid : uuid()]: { id, left, top, initial: !dragid } }))
         },
+        hover: (item, monitor) => {
+            if (monitor.getItemType() === Dragtype.Moveable) {
+                const delta = monitor.getDifferenceFromInitialOffset()
+                const left = delta.x + item.left
+                const top = delta.y + item.top
+                const { dragid, id } = item
+                setElements(elems => ({ ...elems, [dragid ? dragid : uuid()]: { id, left, top, initial: !dragid } }))
+            }
+        },
         accept: [Dragtype.MenuTile, Dragtype.Moveable]
     })
 
