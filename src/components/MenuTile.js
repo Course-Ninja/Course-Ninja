@@ -1,22 +1,20 @@
-import { useContext, Children, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import Draggable from "../drags/Draggable"
 import { ElementsContext } from "../App"
+import { v4 as uuid } from "uuid"
 
-const MenuTile = (props) => {
+const MenuTile = ({children}) => {
     const className = "aspect-square border-4 border-slate-500 flex justify-center items-center bg-white"
     const { setObjRefs } = useContext(ElementsContext)
-    const { id, children } = props
-    if (!id) throw new Error("All MenuTiles need id attributes (eg <MenuTile id=\"foo\">)")
-
-    const child = Children.toArray(children)[0]
+    const [ id ] = useState(uuid())
 
     useEffect(() =>
-        setObjRefs(objs => ({ ...objs, [id]: child }))
+        setObjRefs(objs => ({ ...objs, [id]: children }))
         // DO NOT DELETE THIS AND NEXT COMMENT
         // eslint-disable-next-line react-hooks/exhaustive-deps
         , [])
 
-    return <div className={className}{...props}>
+    return <div className={className}>
         <Draggable id={id} className="size-full flex justify-center items-center">
             {children}
         </Draggable>
