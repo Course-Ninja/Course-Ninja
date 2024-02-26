@@ -1,14 +1,11 @@
-import { Children, createContext, useState } from "react"
+import { Children, useContext, useEffect } from "react"
 import { useDrop } from "react-dnd"
 import Dragtype from "../drags/Dragtype"
-import TabsPane from "./TabsPane"
+import { ElementsContext } from "../App"
 import { useDelete } from "../components/utils"
 
-const defaultTab = "Shapes"
-export const TabContext = createContext(defaultTab)
-
-const EditorPane = ({ children, width }) => {
-    const [activeTab, setActiveTab] = useState(defaultTab)
+const EditorPane = ({ children }) => {
+    const { activeTab, setTabs } = useContext(ElementsContext)
 
     const removeElement = useDelete()
     const [{ isOver }, drop] = useDrop(() => ({
@@ -21,16 +18,18 @@ const EditorPane = ({ children, width }) => {
         })
     }))
 
-    return <div ref={drop} className="flex z-50 bg-lime-50" style={{ width }}>
-        <div className={`flex fixed size-full bg-red-400 opacity-90 ${isOver ? "" : "hidden"}`} style={{ width }}>
+    useEffect(() => {
+        Children.map(children, child =>
+            setTabs(elements => ({ ...elements, [child.props.name]: child }))
+        )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    return <div ref={drop} className="flex z-50 bg-white">
+        {/* <div className={`flex fixed size-full bg-red-400 opacity-90 ${isOver ? "" : "hidden"}`} style={{ width }}>
             <p className="text-2xl font-bold m-auto">Delete</p>
-        </div>
-        <TabContext.Provider value={{ activeTab, setActiveTab }}>
-            <TabsPane>
-                {children}
-            </TabsPane>
-        </TabContext.Provider>
-        <div className="w-full overflow-y-auto">
+        </div> */}
+        <div className="w-full">
             {Children.map(children, child =>
                 <div className={activeTab === child.props.name ? "" : "hidden"}>
                     {child}

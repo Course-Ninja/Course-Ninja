@@ -4,7 +4,7 @@ import { ElementsContext } from "../App"
 import { v4 as uuid } from "uuid"
 
 const MenuTile = ({children}) => {
-    const className = "aspect-square border-4 border-slate-500 flex justify-center items-center bg-white"
+    const className = "aspect-square min-w-fit border-4 border-slate-500 flex justify-center items-center bg-white"
     const { setObjRefs } = useContext(ElementsContext)
     const [ id ] = useState(uuid())
 

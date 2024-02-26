@@ -7,8 +7,8 @@ import Dragtype from "../drags/Dragtype"
 import ContextMenu from "../components/ContextMenu"
 import { ElementsContext } from "../App"
 
-const Whiteboard = ({ children, width }) => {
-    const className = "rounded-md border-4 border-slate-500 w-3/4 flex items-center justify-center relative"
+const Whiteboard = ({ children }) => {
+    const className = "rounded-md border-4 m-8 border-slate-500 flex flex-grow items-center justify-center relative bg-white"
     const { elements, setElements, objRef } = useContext(ElementsContext)
 
     const [, drop] = useDrop({
@@ -40,13 +40,13 @@ const Whiteboard = ({ children, width }) => {
     }, [elements])
 
     return (
-        <div ref={drop} className={className} style={{ width }}>
+        <div ref={drop} className={className}>
             {Object.entries(elements).length ? Object.entries(elements).map(
                 ([dragid, obj], key) =>
                     <div onContextMenu={event => show({ event, id: dragid })} key={key}>
                         <Draggable dragid={dragid} // for element movement
                             {...obj}
-                            className="fixed size-fit" // absolute positioning on whiteboard
+                            className="fixed" // absolute positioning on whiteboard
                             type={Dragtype.Moveable} //drag type
                         >
                             {objRef[obj.id]}
