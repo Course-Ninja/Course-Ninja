@@ -25,10 +25,10 @@ const EditorPane = ({ children }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    return <div ref={drop} className="flex z-50 bg-white">
-        {/* <div className={`flex fixed size-full bg-red-400 opacity-90 ${isOver ? "" : "hidden"}`} style={{ width }}>
-            <p className="text-2xl font-bold m-auto">Delete</p>
-        </div> */}
+    return <div ref={drop} className="flex z-30">
+        <div className={`flex flex-1 fixed justify-center size-full bg-red-400 opacity-90 z-40 ${isOver ? "" : "hidden"}`}>
+            <p className="select-none text-2xl font-bold">Delete</p>
+        </div>
         <div className="w-full">
             {Children.map(children, child =>
                 <div className={activeTab === child.props.name ? "" : "hidden"}>

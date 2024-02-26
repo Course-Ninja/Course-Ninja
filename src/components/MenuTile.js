@@ -15,7 +15,7 @@ const MenuTile = ({children}) => {
         , [])
 
     return <div className={className}>
-        <Draggable id={id} className="size-full flex justify-center items-center">
+        <Draggable id={id} className="flex justify-center items-center">
             {children}
         </Draggable>
     </div>
