@@ -18,9 +18,10 @@ function App() {
   const [objRef, setObjRefs] = useState({})
   return (
     <div className="App">
-      <div id="editor" className="flex h-dvh">
+      <div id="editor" className="h-dvh">
         <ElementsContext.Provider value={{ elements, setElements, objRef, setObjRefs}}>
-          <EditorPane width="25%">
+          <Whiteboard><p className="select-none">Whiteboard</p></Whiteboard>
+          <EditorPane>
             <ShapesTab name="Shapes"></ShapesTab>
             <InsertTab name="Insert"></InsertTab>
             <TextTab name="Text"></TextTab>
@@ -29,7 +30,6 @@ function App() {
             <ToolboxTab name="Toolbox"></ToolboxTab>
             <ActionsTab name="Actions"></ActionsTab>
           </EditorPane>
-          <Whiteboard width="75%"><p className="select-none">Whiteboard</p></Whiteboard>
         </ElementsContext.Provider>
       </div>
       {/* <header className="App-header">

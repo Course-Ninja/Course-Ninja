@@ -2,7 +2,7 @@ import { Children } from "react"
 import MenuTile from "./MenuTile"
 
 const TileContainer = ({ children }) => {
-    return <div className="grid grid-cols-2 auto-rows-min">
+    return <div className="flex">
         {Children.map(children, child =>
             <MenuTile>
                 {child}
