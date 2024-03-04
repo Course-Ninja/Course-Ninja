@@ -12,7 +12,6 @@ import ThemesTab from './tabs/ThemesTab';
 import DrawTab from './tabs/DrawTab';
 import ActionsTab from './tabs/ActionsTab';
 import Navbar from './windows/Navbar';
-import WhiteboardBorder from './windows/WhiteboardBorder';
 
 export const ElementsContext = createContext()
 
@@ -24,8 +23,6 @@ function App() {
   const [objRef, setObjRefs] = useState({})
   const [activeTab, setActiveTab] = useState(defaultTab)
   const [tabs, setTabs] = useState({})
-  const [border, setBorder] = useState({})
-  const [visible, setVisible] = useState(false)
 
   return <>
     <div className="App flex flex-col bg-slate-200 h-dvh">
@@ -37,11 +34,8 @@ function App() {
           </TabsPane>
         </TabContext.Provider>
         <div id="editor" className="flex flex-col flex-grow justify-between">
-          <ElementsContext.Provider value={{ elements, setElements, objRef, setObjRefs, setTabs, activeTab, border, setBorder, visible, setVisible }}>
-            <div className='flex flex-grow'>
-              <Whiteboard><p className="select-none">Whiteboard</p></Whiteboard>
-              <WhiteboardBorder />
-            </div>
+          <ElementsContext.Provider value={{ elements, setElements, objRef, setObjRefs, setTabs, activeTab }}>
+            <Whiteboard><p className="select-none">Whiteboard</p></Whiteboard>
             <EditorPane>
               <ShapesTab name="Shapes"></ShapesTab>
               <InsertTab name="Insert"></InsertTab>

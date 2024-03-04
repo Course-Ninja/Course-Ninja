@@ -1,4 +1,4 @@
-import { useContext, useEffect, useLayoutEffect, useRef } from "react"
+import { useContext, useState, useEffect, useLayoutEffect, useRef } from "react"
 import { useDrop } from "react-dnd"
 import { useContextMenu } from "react-contexify"
 import { v4 as uuid } from "uuid"
@@ -6,19 +6,19 @@ import Draggable from "../drags/Draggable"
 import Dragtype from "../drags/Dragtype"
 import ContextMenu from "../components/ContextMenu"
 import { ElementsContext } from "../App"
-import { objectEquals } from "../components/utils"
 
 const Whiteboard = ({ children }) => {
     const className = "rounded-md border-4 m-8 border-slate-500 flex flex-grow items-center justify-center relative bg-white"
-    const { elements, setElements, objRef, setBorder, border } = useContext(ElementsContext)
+    const { elements, setElements, objRef } = useContext(ElementsContext)
     const ref = useRef()
+    const [boundingBox, setBoundingBox] = useState({})
 
     const [, drop] = useDrop({
         drop: (item, monitor) => {
             if (monitor.getItemType() === Dragtype.MenuTile) {
                 const delta = monitor.getClientOffset()
-                const left = delta.x
-                const top = delta.y
+                var left = delta.x
+                var top = delta.y
                 const { id } = item
                 setElements(elems => ({ ...elems, [uuid()]: { id, left, top, initial: true } }))
             }
@@ -26,9 +26,16 @@ const Whiteboard = ({ children }) => {
         hover: (item, monitor) => {
             if (monitor.getItemType() === Dragtype.Moveable) {
                 const delta = monitor.getDifferenceFromInitialOffset()
-                const left = delta.x + item.left
-                const top = delta.y + item.top
-                const { dragid, id } = item
+                var left = delta.x + item.left
+                var top = delta.y + item.top
+                const { dragid, id, width, height } = item
+                const right = left + width
+                const bottom = top + height
+
+                if (left < boundingBox.left) left = boundingBox.left
+                if (right > boundingBox.right) left = boundingBox.right - width
+                if (top < boundingBox.top) top = boundingBox.top
+                if (bottom > boundingBox.bottom) top = boundingBox.bottom - height
                 setElements(elems => ({ ...elems, [dragid]: { id, left, top, initial: false } }))
             }
         },
@@ -44,12 +51,14 @@ const Whiteboard = ({ children }) => {
     useLayoutEffect(() => {
         const node = ref.current
         if (node) {
-            const newBorder = { top: node.offsetTop, left: node.offsetLeft,
-                right: window.innerWidth - node.offsetLeft - node.clientWidth,
-                bottom: window.innerHeight - node.offsetTop - node.clientHeight }
-            if (!objectEquals(newBorder, border)) setBorder(newBorder)
+            setBoundingBox({
+                top: node.offsetTop,
+                left: node.offsetLeft,
+                right: node.offsetLeft + node.clientWidth,
+                bottom: node.offsetTop + node.clientHeight
+            })
         }
-    })
+    }, [setBoundingBox])
 
     return (
         <div ref={e => {
