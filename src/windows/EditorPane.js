@@ -26,7 +26,7 @@ const EditorPane = ({ children }) => {
     }, [])
 
     return <div ref={drop} className="flex z-30">
-        <div className={`flex flex-1 fixed justify-center size-full bg-red-400 opacity-90 z-40 ${isOver ? "" : "hidden"}`}>
+        <div className={`fixed p-32 size-full bg-red-400 opacity-90 z-40  ${isOver ? "" : "hidden"}`}>
             <p className="select-none text-2xl font-bold">Delete</p>
         </div>
         <div className="w-full">

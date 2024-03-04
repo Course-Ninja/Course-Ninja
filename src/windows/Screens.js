@@ -11,9 +11,9 @@ const Screens = () => {
         ]))
     }
 
-    return <div className="bg-[#BBBBBB] size-full">
+    return <div className="bg-[#BBBBBB] size-full overflow-y-auto">
         {screens.map((element, index) => <div className="flex items-center justify-center" key={index}>
-            <span className="p-2">Screen {index + 1}</span>
+            <span className="p-2 pl-4">Screen {index + 1}</span>
             <Preview
                 onClick={e => setActiveScreen(index)}
                 className="aspect-video w-2/5 rounded-md border-4 border-slate-500 m-2 flex flex-grow items-center justify-center relative bg-white">
@@ -21,7 +21,7 @@ const Screens = () => {
             </Preview>
         </div>)}
         <div className="flex items-center justify-center">
-            <span className="p-2 invisible">Screen 9</span>
+            <span className="p-2 pl-4 invisible">Screen 9</span>
             <Preview
                 onClick={click}
                 className="aspect-video w-2/5 rounded-md border-4 border-slate-500 m-2 flex flex-grow items-center justify-center relative bg-[#F0F5F9]">
