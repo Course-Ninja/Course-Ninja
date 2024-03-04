@@ -13,8 +13,10 @@ import DrawTab from './tabs/DrawTab';
 import ActionsTab from './tabs/ActionsTab';
 import Navbar from './windows/Navbar';
 import ActionsMenu from './windows/ActionsMenu';
+import Screens from './windows/Screens';
 
 export const ElementsContext = createContext()
+export const ScreensContext = createContext()
 
 const defaultTab = "Shapes"
 export const TabContext = createContext(defaultTab)
@@ -24,6 +26,8 @@ function App() {
   const [objRef, setObjRefs] = useState({})
   const [activeTab, setActiveTab] = useState(defaultTab)
   const [tabs, setTabs] = useState({})
+  const [screens, setScreens] = useState([<p className="select-none">Whiteboard</p>])
+  const [activeScreen, setActiveScreen] = useState(0)
 
   return <>
     <div className="App flex flex-col bg-slate-200 h-dvh">
@@ -37,13 +41,21 @@ function App() {
         <div id="editor" className="flex flex-col flex-grow justify-between">
           <ElementsContext.Provider value={{ elements, setElements, objRef, setObjRefs, setTabs, activeTab }}>
             <div className='flex h-full m-8 mr-0'>
-              <Whiteboard><p className="select-none">Whiteboard</p></Whiteboard>
-              <div className='grid grid-rows-2'>
-                <div className='bg-white m-2 mt-0 p-16 flex items-center'>
-                  <ActionsMenu />
+              <ScreensContext.Provider value={{ setScreens, screens, setActiveScreen }}>
+                {screens.map((element, key) => <div className={`flex flex-grow ${activeScreen===key ? "" : "hidden"}`} key={key}>
+                  <Whiteboard>
+                    {element}
+                  </Whiteboard>
+                </div>)}
+                <div className='grid grid-rows-2 w-1/6'>
+                  <div className='m-2 mt-0 flex items-center'>
+                    <ActionsMenu />
+                  </div>
+                  <div className='m-2 mb-0 flex items-center'>
+                    <Screens />
+                  </div>
                 </div>
-                <div className='bg-white m-2 mb-0 p-16 flex items-center'>Box 2</div>
-              </div>
+              </ScreensContext.Provider>
             </div>
             <EditorPane>
               <ShapesTab name="Shapes"></ShapesTab>
