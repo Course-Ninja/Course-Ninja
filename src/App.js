@@ -12,6 +12,7 @@ import ThemesTab from './tabs/ThemesTab';
 import DrawTab from './tabs/DrawTab';
 import ActionsTab from './tabs/ActionsTab';
 import Navbar from './windows/Navbar';
+import ActionsMenu from './windows/ActionsMenu';
 
 export const ElementsContext = createContext()
 
@@ -35,7 +36,15 @@ function App() {
         </TabContext.Provider>
         <div id="editor" className="flex flex-col flex-grow justify-between">
           <ElementsContext.Provider value={{ elements, setElements, objRef, setObjRefs, setTabs, activeTab }}>
-            <Whiteboard><p className="select-none">Whiteboard</p></Whiteboard>
+            <div className='flex h-full m-8 mr-0'>
+              <Whiteboard><p className="select-none">Whiteboard</p></Whiteboard>
+              <div className='grid grid-rows-2'>
+                <div className='bg-white m-2 mt-0 p-16 flex items-center'>
+                  <ActionsMenu />
+                </div>
+                <div className='bg-white m-2 mb-0 p-16 flex items-center'>Box 2</div>
+              </div>
+            </div>
             <EditorPane>
               <ShapesTab name="Shapes"></ShapesTab>
               <InsertTab name="Insert"></InsertTab>

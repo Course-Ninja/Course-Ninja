@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useLayoutEffect, useRef } from "react"
+import { useContext, useState, useEffect, useRef } from "react"
 import { useDrop } from "react-dnd"
 import { useContextMenu } from "react-contexify"
 import { v4 as uuid } from "uuid"
@@ -8,7 +8,7 @@ import ContextMenu from "../components/ContextMenu"
 import { ElementsContext } from "../App"
 
 const Whiteboard = ({ children }) => {
-    const className = "rounded-md border-4 m-8 border-slate-500 flex flex-grow items-center justify-center relative bg-white"
+    const className = "rounded-md border-4 border-slate-500 flex flex-grow items-center justify-center relative bg-white"
     const { elements, setElements, objRef } = useContext(ElementsContext)
     const ref = useRef()
     const [boundingBox, setBoundingBox] = useState({})
@@ -17,8 +17,8 @@ const Whiteboard = ({ children }) => {
         drop: (item, monitor) => {
             if (monitor.getItemType() === Dragtype.MenuTile) {
                 const delta = monitor.getClientOffset()
-                var left = delta.x
-                var top = delta.y
+                const left = delta.x
+                const top = delta.y
                 const { id } = item
                 setElements(elems => ({ ...elems, [uuid()]: { id, left, top, initial: true } }))
             }
@@ -45,20 +45,21 @@ const Whiteboard = ({ children }) => {
     const { show } = useContextMenu()
 
     useEffect(() => {
+        // gives prompt to close window
         window.onbeforeunload = () => Object.entries(elements).length ? true : undefined
-    }, [elements])
 
-    useLayoutEffect(() => {
+        // gets size of whiteboard
         const node = ref.current
         if (node) {
+            const rect = node.getBoundingClientRect()
             setBoundingBox({
-                top: node.offsetTop,
-                left: node.offsetLeft,
-                right: node.offsetLeft + node.clientWidth,
-                bottom: node.offsetTop + node.clientHeight
+                left: rect.left,
+                top: rect.top,
+                right: rect.right,
+                bottom: rect.bottom
             })
         }
-    }, [setBoundingBox])
+    }, [elements])
 
     return (
         <div ref={e => {
