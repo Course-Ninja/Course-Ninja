@@ -5,18 +5,18 @@ import { ElementsContext } from "../App"
 import { useDelete } from "../components/utils"
 
 const EditorPane = ({ children }) => {
-    const { activeTab, setTabs } = useContext(ElementsContext)
+    const { activeTab, setTabs, activeScreen } = useContext(ElementsContext)
 
     const removeElement = useDelete()
     const [{ isOver }, drop] = useDrop(() => ({
         accept: [Dragtype.Moveable],
         drop: ({ dragid }) => {
-            removeElement(dragid)
+            removeElement(activeScreen, dragid)
         },
         collect: monitor => ({
             isOver: monitor.isOver()
         })
-    }))
+    }), [activeScreen])
 
     useEffect(() => {
         Children.map(children, child =>

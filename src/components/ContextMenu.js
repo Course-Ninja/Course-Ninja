@@ -1,8 +1,11 @@
 import { Menu, Item, Separator, Submenu } from "react-contexify"
 import 'react-contexify/ReactContexify.css'
 import { useDelete } from "./utils"
+import { useContext } from "react"
+import { ScreensContext } from "../App"
 
-const ContextMenu = ({id}) => {
+const ContextMenu = ({ id }) => {
+    const { activeScreen } = useContext(ScreensContext)
     const remove = useDelete()
 
     return <>
@@ -14,9 +17,9 @@ const ContextMenu = ({id}) => {
                 <Item>Flip horizontally</Item>
                 <Item>Flip vertically</Item>
             </Submenu>
-            <Separator/>
+            <Separator />
             <Item>Rename</Item>
-            <Item onClick={() => remove(id)}>Delete</Item>
+            <Item onClick={() => remove(activeScreen, id)}>Delete</Item>
         </Menu>
     </>
 }

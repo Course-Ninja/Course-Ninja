@@ -26,8 +26,7 @@ function App() {
   const [objRef, setObjRefs] = useState({})
   const [activeTab, setActiveTab] = useState(defaultTab)
   const [tabs, setTabs] = useState({})
-  // const [screens, setScreens] = useState([<p className="select-none">Whiteboard</p>, <p className="select-none">Whiteboard</p>, <p className="select-none">Whiteboard</p>, <p className="select-none">Whiteboard</p>, <p className="select-none">Whiteboard</p>])
-  const [screens, setScreens] = useState([<p className="select-none">Whiteboard</p>])
+  const [screens, setScreens] = useState([{}])
   const [activeScreen, setActiveScreen] = useState(0)
 
   return <>
@@ -40,14 +39,13 @@ function App() {
           </TabsPane>
         </TabContext.Provider>
         <div id="editor" className="flex flex-col flex-grow justify-between">
-          <ElementsContext.Provider value={{ elements, setElements, objRef, setObjRefs, setTabs, activeTab }}>
+          <ElementsContext.Provider value={{ activeScreen, setScreens, objRef, setObjRefs, setTabs, activeTab }}>
             <div className='flex h-full m-8 mr-0'>
-              <ScreensContext.Provider value={{ setScreens, screens, setActiveScreen }}>
-                {screens.map((element, key) => <div className={`mr-8 flex flex-grow ${activeScreen===key ? "" : "hidden"}`} key={key}>
-                  <Whiteboard>
-                    {element}
-                  </Whiteboard>
-                </div>)}
+              <ScreensContext.Provider value={{ setScreens, screens, setActiveScreen, activeScreen }}>
+                {screens.map((element, key) => <Whiteboard key={key} num={key}>
+                  <p className="select-none">Whiteboard</p>
+                </Whiteboard>
+                )}
                 <div className='flex flex-col w-1/6'>
                   <div className='m-2 mt-0 h-1/2'>
                     <ActionsMenu />
