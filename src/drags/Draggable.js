@@ -13,12 +13,10 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
     useLayoutEffect(() => {
         const { width, height } = (ref.current && initial)
             ? ref.current.getBoundingClientRect() : { width: 0, height: 0 }
+        setWidth(before => initial ? width : before)
+        setHeight(before => initial ? height : before)
         setNewLeft(left - width / 2)
         setNewTop(top - height / 2)
-        if (initial) {
-            setWidth(width)
-            setHeight(height)
-        }
     }, [initial, left, top])
 
     const [, drag, preview] = useDrag(() => ({
@@ -34,11 +32,11 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
             preview(getEmptyImage(), { captureDraggingState: true })
     }, [preview, type])
 
-    return <div ref={e => {
-        drag(e)
-        ref.current = e
-    }} onClick={() => ref.current.focus()}
-        tabIndex="0" style={{ left: newLeft, top: newTop }}
+    return <div
+        ref={e => { drag(e); ref.current = e }}
+        onClick={() => ref.current.focus()}
+        tabIndex="0"
+        style={{ left: newLeft, top: newTop }}
         className={`${className} cursor-move ${type === Dragtype.Moveable ? "focus:outline-dotted focus:outline-[3px]" : ""}`}>
         {children}
     </div>
