@@ -2,10 +2,10 @@ import { Menu, Item, Separator, Submenu } from "react-contexify"
 import 'react-contexify/ReactContexify.css'
 import { useDelete } from "./utils"
 import { useContext } from "react"
-import { ScreensContext } from "../App"
+import { ElementsContext } from "../App"
 
 const ContextMenu = ({ id }) => {
-    const { activeScreen } = useContext(ScreensContext)
+    const { activeScreen } = useContext(ElementsContext)
     const remove = useDelete()
 
     return <>

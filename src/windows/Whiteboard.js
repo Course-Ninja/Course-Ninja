@@ -9,7 +9,8 @@ import { ElementsContext, ScreensContext } from "../App"
 
 const Whiteboard = ({ children, num }) => {
     const { objRef } = useContext(ElementsContext)
-    const { screens, setScreens, activeScreen } = useContext(ScreensContext)
+    const { screens } = useContext(ScreensContext)
+    const { setScreens, activeScreen } = useContext(ElementsContext)
 
     const className = `${activeScreen === num ? "" : "hidden"} rounded-md border-4 border-slate-500 mr-8 flex flex-grow items-center justify-center relative bg-white`
     const ref = useRef()

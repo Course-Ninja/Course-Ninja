@@ -22,7 +22,6 @@ const defaultTab = "Shapes"
 export const TabContext = createContext(defaultTab)
 
 function App() {
-  const [elements, setElements] = useState({})
   const [objRef, setObjRefs] = useState({})
   const [activeTab, setActiveTab] = useState(defaultTab)
   const [tabs, setTabs] = useState({})
@@ -41,7 +40,7 @@ function App() {
         <div id="editor" className="flex flex-col flex-grow justify-between">
           <ElementsContext.Provider value={{ activeScreen, setScreens, objRef, setObjRefs, setTabs, activeTab }}>
             <div className='flex h-full m-8 mr-0'>
-              <ScreensContext.Provider value={{ setScreens, screens, setActiveScreen, activeScreen }}>
+              <ScreensContext.Provider value={{ screens, setActiveScreen }}>
                 {screens.map((element, key) => <Whiteboard key={key} num={key}>
                   <p className="select-none">Whiteboard</p>
                 </Whiteboard>
