@@ -82,7 +82,7 @@ const Whiteboard = ({ children, num }) => {
                     <div onContextMenu={event => show({ event, id: dragid })} key={key}>
                         <Draggable dragid={dragid} // for element movement
                             {...obj}
-                            className="fixed" // absolute positioning on whiteboard
+                            className="fixed max-h-[100px] max-w-[100px]" // absolute positioning on whiteboard
                             type={Dragtype.Moveable} //drag type
                         >
                             {objRef[obj.id]}

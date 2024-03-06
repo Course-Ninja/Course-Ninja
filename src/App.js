@@ -58,7 +58,7 @@ function App() {
             <EditorPane>
               <ShapesTab name="Shapes"></ShapesTab>
               <InsertTab name="Insert"></InsertTab>
-              <TextTab name="Text"></TextTab>
+              <TextTab name="Fruits"></TextTab>
               <ThemesTab name="Themes"></ThemesTab>
               <DrawTab name="Draw"></DrawTab>
               <ToolboxTab name="Toolbox"></ToolboxTab>
