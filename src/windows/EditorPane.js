@@ -1,35 +1,36 @@
-import { Children, useContext, useEffect } from "react"
+import { Children, createContext, useState } from "react"
 import { useDrop } from "react-dnd"
 import Dragtype from "../drags/Dragtype"
-import { ElementsContext } from "../App"
+import TabsPane from "./TabsPane"
 import { useDelete } from "../components/utils"
 
-const EditorPane = ({ children }) => {
-    const { activeTab, setTabs, activeScreen } = useContext(ElementsContext)
+const defaultTab = "Shapes"
+export const TabContext = createContext(defaultTab)
+
+const EditorPane = ({ children, width }) => {
+    const [activeTab, setActiveTab] = useState(defaultTab)
 
     const removeElement = useDelete()
     const [{ isOver }, drop] = useDrop(() => ({
         accept: [Dragtype.Moveable],
         drop: ({ dragid }) => {
-            removeElement(activeScreen, dragid)
+            removeElement(dragid)
         },
         collect: monitor => ({
             isOver: monitor.isOver()
         })
-    }), [activeScreen])
+    }))
 
-    useEffect(() => {
-        Children.map(children, child =>
-            setTabs(elements => ({ ...elements, [child.props.name]: child }))
-        )
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    return <div ref={drop} className="flex z-30">
-        <div className={`fixed p-32 size-full bg-red-400 opacity-90 z-40  ${isOver ? "" : "hidden"}`}>
-            <p className="select-none text-2xl font-bold">Delete</p>
+    return <div ref={drop} className="flex z-50 bg-lime-50" style={{ width }}>
+        <div className={`flex fixed size-full bg-red-400 opacity-90 ${isOver ? "" : "hidden"}`} style={{ width }}>
+            <p className="text-2xl font-bold m-auto">Delete</p>
         </div>
-        <div className="w-full">
+        <TabContext.Provider value={{ activeTab, setActiveTab }}>
+            <TabsPane>
+                {children}
+            </TabsPane>
+        </TabContext.Provider>
+        <div className="w-full overflow-y-auto">
             {Children.map(children, child =>
                 <div className={activeTab === child.props.name ? "" : "hidden"}>
                     {child}
