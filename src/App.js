@@ -49,7 +49,7 @@ function App() {
                   <div className='m-2 mt-0 h-1/2'>
                     <ActionsMenu />
                   </div>
-                  <div className='m-2 mb-0 h-1/2'>
+                  <div className='m-2 mb-0 h-px grow'>
                     <Screens />
                   </div>
                 </div>
