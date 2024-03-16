@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import './App.css';
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import EditorPane from './windows/EditorPane'
 import Whiteboard from './windows/Whiteboard';
 import ShapesTab from './tabs/ShapesTab';
@@ -15,7 +15,8 @@ import Navbar from './windows/Navbar';
 import ActionsMenu from './windows/ActionsMenu';
 import Screens from './windows/Screens';
 
-export const ElementsContext = createContext()
+export const SharedContext = createContext()
+export const EditorContext = createContext()
 export const ScreensContext = createContext()
 
 const defaultTab = "Shapes"
@@ -28,6 +29,16 @@ function App() {
   const [screens, setScreens] = useState([{}])
   const [activeScreen, setActiveScreen] = useState(0)
 
+  useEffect(() => {
+    // gives prompt to close window
+    window.onbeforeunload = () => {
+      for (const screen of screens) {
+        if (Object.entries(screen).length) return true
+      }
+      return undefined
+    }
+  }, [screens])
+
   return <>
     <div className="App flex flex-col bg-slate-200 h-dvh">
       <Navbar />
@@ -38,11 +49,11 @@ function App() {
           </TabsPane>
         </TabContext.Provider>
         <div id="editor" className="flex flex-col flex-grow justify-between">
-          <ElementsContext.Provider value={{ activeScreen, setScreens, objRef, setObjRefs, setTabs, activeTab }}>
-            <div className='flex h-full m-8 mr-0'>
-              <ScreensContext.Provider value={{ screens, setActiveScreen }}>
-                {screens.map((element, key) => <Whiteboard key={key} num={key}>
-                  <p className="select-none">Whiteboard</p>
+          <SharedContext.Provider value={{ activeScreen, setScreens }}>
+            <ScreensContext.Provider value={{ objRef, screens, setActiveScreen }}>
+              <div className='flex h-full m-8 mr-0'>
+                {screens.map((screen, key) => <Whiteboard key={key} num={key}>
+                  {screen}
                 </Whiteboard>
                 )}
                 <div className='flex flex-col w-1/6'>
@@ -53,18 +64,20 @@ function App() {
                     <Screens />
                   </div>
                 </div>
-              </ScreensContext.Provider>
-            </div>
-            <EditorPane>
-              <ShapesTab name="Shapes"></ShapesTab>
-              <InsertTab name="Insert"></InsertTab>
-              <TextTab name="Fruits"></TextTab>
-              <ThemesTab name="Themes"></ThemesTab>
-              <DrawTab name="Draw"></DrawTab>
-              <ToolboxTab name="Toolbox"></ToolboxTab>
-              <ActionsTab name="Actions"></ActionsTab>
-            </EditorPane>
-          </ElementsContext.Provider>
+              </div>
+            </ScreensContext.Provider>
+            <EditorContext.Provider value={{ setObjRefs, setTabs, activeTab }}>
+              <EditorPane>
+                <ShapesTab name="Shapes"></ShapesTab>
+                <InsertTab name="Insert"></InsertTab>
+                <TextTab name="Fruits"></TextTab>
+                <ThemesTab name="Themes"></ThemesTab>
+                <DrawTab name="Draw"></DrawTab>
+                <ToolboxTab name="Toolbox"></ToolboxTab>
+                <ActionsTab name="Actions"></ActionsTab>
+              </EditorPane>
+            </EditorContext.Provider>
+          </SharedContext.Provider>
         </div>
       </div>
       {/* <header className="App-header">

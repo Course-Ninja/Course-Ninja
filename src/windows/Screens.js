@@ -1,10 +1,10 @@
 import { useContext } from "react"
-import { ElementsContext, ScreensContext } from "../App"
+import { SharedContext, ScreensContext } from "../App"
 
 const Screens = () => {
     const { screens, setActiveScreen } = useContext(ScreensContext)
     // const { objRef, setScreens } = useContext(ElementsContext)
-    const { setScreens, activeScreen } = useContext(ElementsContext)
+    const { setScreens, activeScreen } = useContext(SharedContext)
 
     const click = () => {
         setScreens(elements => ([...elements, {}]))

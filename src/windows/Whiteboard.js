@@ -5,12 +5,11 @@ import { v4 as uuid } from "uuid"
 import Draggable from "../drags/Draggable"
 import Dragtype from "../drags/Dragtype"
 import ContextMenu from "../components/ContextMenu"
-import { ElementsContext, ScreensContext } from "../App"
+import { SharedContext, ScreensContext } from "../App"
 
 const Whiteboard = ({ children, num }) => {
-    const { objRef } = useContext(ElementsContext)
-    const { screens } = useContext(ScreensContext)
-    const { setScreens, activeScreen } = useContext(ElementsContext)
+    const { objRef } = useContext(ScreensContext)
+    const { setScreens, activeScreen } = useContext(SharedContext)
 
     const className = `${activeScreen === num ? "" : "hidden"} rounded-md border-4 border-slate-500 mr-8 flex flex-grow items-center justify-center relative bg-white`
     const ref = useRef()
@@ -56,9 +55,6 @@ const Whiteboard = ({ children, num }) => {
     const { show } = useContextMenu()
 
     useEffect(() => {
-        // gives prompt to close window
-        window.onbeforeunload = () => Object.entries(screens[num]).length ? true : undefined
-
         // gets size of whiteboard
         const node = ref.current
         if (node) {
@@ -70,14 +66,14 @@ const Whiteboard = ({ children, num }) => {
                 bottom: rect.bottom
             })
         }
-    }, [screens, num])
+    }, [num])
 
     return (
         <div ref={e => {
             drop(e)
             ref.current = e
         }} className={className}>
-            {Object.entries(screens[num]).length ? Object.entries(screens[num]).map(
+            {Object.entries(children).length ? Object.entries(children).map(
                 ([dragid, obj], key) =>
                     <div onContextMenu={event => show({ event, id: dragid })} key={key}>
                         <Draggable dragid={dragid} // for element movement
@@ -89,7 +85,7 @@ const Whiteboard = ({ children, num }) => {
                         </Draggable>
                         <ContextMenu id={dragid} />
                     </div>
-            ) : children}
+            ) : <p className="select-none">Whiteboard</p>}
         </div>
     )
 }

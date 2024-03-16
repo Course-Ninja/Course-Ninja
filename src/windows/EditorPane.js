@@ -1,11 +1,12 @@
 import { Children, useContext, useEffect } from "react"
 import { useDrop } from "react-dnd"
 import Dragtype from "../drags/Dragtype"
-import { ElementsContext } from "../App"
+import { EditorContext, SharedContext } from "../App"
 import { useDelete } from "../components/utils"
 
 const EditorPane = ({ children }) => {
-    const { activeTab, setTabs, activeScreen } = useContext(ElementsContext)
+    const { activeScreen } = useContext(SharedContext)
+    const { setTabs, activeTab } = useContext(EditorContext)
 
     const removeElement = useDelete()
     const [{ isOver }, drop] = useDrop(() => ({

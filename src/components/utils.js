@@ -1,8 +1,8 @@
 import { useContext, useCallback } from "react"
-import { ElementsContext } from "../App"
+import { SharedContext } from "../App"
 
 export const useDelete = () => {
-    const { setScreens } = useContext(ElementsContext)
+    const { setScreens } = useContext(SharedContext)
 
     return useCallback((index, id) => {
         setScreens(screens => screens.map((screen, idx) =>
