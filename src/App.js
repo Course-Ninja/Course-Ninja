@@ -57,7 +57,7 @@ function App() {
               <div className='flex h-full m-8 mr-0'>
                 {testing ? <TestScreen>
                   {screens[activeScreen]}
-                </TestScreen> : screens.map((element, key) => <Whiteboard key={key} num={key}>
+                </TestScreen> : screens.map((screen, key) => <Whiteboard key={key} num={key}>
                   {screen}
                 </Whiteboard>
                 )}
