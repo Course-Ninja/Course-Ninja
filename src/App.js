@@ -14,6 +14,8 @@ import ActionsTab from './tabs/ActionsTab';
 import Navbar from './windows/Navbar';
 import ActionsMenu from './windows/ActionsMenu';
 import Screens from './windows/Screens';
+import TestRun from './windows/TestRun'
+import TestScreen from './windows/TestScreen';
 
 export const SharedContext = createContext()
 export const EditorContext = createContext()
@@ -28,6 +30,7 @@ function App() {
   const [tabs, setTabs] = useState({})
   const [screens, setScreens] = useState([{}])
   const [activeScreen, setActiveScreen] = useState(0)
+  const [testing, setTesting] = useState(false)
 
   useEffect(() => {
     // gives prompt to close window
@@ -52,12 +55,15 @@ function App() {
           <SharedContext.Provider value={{ activeScreen, setScreens }}>
             <ScreensContext.Provider value={{ objRef, screens, setActiveScreen }}>
               <div className='flex h-full m-8 mr-0'>
-                {screens.map((screen, key) => <Whiteboard key={key} num={key}>
+                {testing ? <TestScreen>
+                  {screens[activeScreen]}
+                </TestScreen> : screens.map((element, key) => <Whiteboard key={key} num={key}>
                   {screen}
                 </Whiteboard>
                 )}
                 <div className='flex flex-col w-1/6'>
-                  <div className='m-2 mt-0 h-1/2'>
+                  <TestRun />
+                  <div className='m-2 h-1/2'>
                     <ActionsMenu />
                   </div>
                   <div className='m-2 mb-0 h-px grow'>
