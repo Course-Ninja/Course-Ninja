@@ -20,6 +20,7 @@ import TestScreen from './windows/TestScreen';
 export const SharedContext = createContext()
 export const EditorContext = createContext()
 export const ScreensContext = createContext()
+export const ActionsContext = createContext()
 
 const defaultTab = "Shapes"
 export const TabContext = createContext(defaultTab)
@@ -29,6 +30,7 @@ function App() {
   const [activeTab, setActiveTab] = useState(defaultTab)
   const [tabs, setTabs] = useState({})
   const [screens, setScreens] = useState([{}])
+  const [actions, setActions] = useState([{}])
   const [activeScreen, setActiveScreen] = useState(0)
   const [testing, setTesting] = useState(false)
 
@@ -63,8 +65,10 @@ function App() {
                 )}
                 <div className='flex flex-col w-1/6'>
                   <TestRun />
-                  <div className='m-2 h-1/2'>
-                    <ActionsMenu />
+                  <div className='m-2 h-1/2 h-px grow'>
+                    <ActionsContext.Provider value={{ actions, setActions }}>
+                      <ActionsMenu />
+                    </ActionsContext.Provider>
                   </div>
                   <div className='m-2 mb-0 h-px grow'>
                     <Screens />
