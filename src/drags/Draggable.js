@@ -11,12 +11,12 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
     const [height, setHeight] = useState()
 
     useLayoutEffect(() => {
-        const { width, height } = (ref.current && initial)
+        const { width, height } = ref.current
             ? ref.current.getBoundingClientRect() : { width: 0, height: 0 }
-        setWidth(before => initial ? width : before)
-        setHeight(before => initial ? height : before)
-        setNewLeft(left - width / 2)
-        setNewTop(top - height / 2)
+        setWidth(before => ref.current ? width : before)
+        setHeight(before => ref.current ? height : before)
+        setNewLeft(left - (initial ? width / 2 : 0))
+        setNewTop(top - (initial ? height / 2 : 0))
     }, [initial, left, top])
 
     const [, drag, preview] = useDrag(() => ({

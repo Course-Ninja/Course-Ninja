@@ -55,7 +55,7 @@ function App() {
         </TabContext.Provider>
         <div id="editor" className="flex flex-col flex-grow justify-between">
           <SharedContext.Provider value={{ activeScreen, setScreens }}>
-            <ScreensContext.Provider value={{ objRef, screens, setActiveScreen }}>
+            <ScreensContext.Provider value={{ objRef, screens, setActiveScreen, testing, setTesting }}>
               <div className='flex h-full m-8 mr-0'>
                 {testing ? <TestScreen>
                   {screens[activeScreen]}
