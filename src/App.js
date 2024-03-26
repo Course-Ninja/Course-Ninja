@@ -15,7 +15,6 @@ import Navbar from './windows/Navbar';
 import ActionsMenu from './windows/ActionsMenu';
 import Screens from './windows/Screens';
 import TestRun from './windows/TestRun'
-import TestScreen from './windows/TestScreen';
 
 export const SharedContext = createContext()
 export const EditorContext = createContext()
@@ -57,12 +56,9 @@ function App() {
           <SharedContext.Provider value={{ testing, activeScreen, setScreens }}>
             <ScreensContext.Provider value={{ objRef, screens, setActiveScreen, setTesting }}>
               <div className='flex h-full m-8 mr-0'>
-                {testing ? <TestScreen>
-                  {screens[activeScreen]}
-                </TestScreen> : screens.map((screen, key) => <Whiteboard key={key} num={key}>
-                  {screen}
+                <Whiteboard>
+                  {screens.find((screen, key) => activeScreen === key)}
                 </Whiteboard>
-                )}
                 <div className='flex flex-col w-1/6'>
                   <TestRun />
                   <div className='m-2 h-1/2 h-px grow'>

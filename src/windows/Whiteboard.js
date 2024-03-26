@@ -7,11 +7,12 @@ import Dragtype from "../drags/Dragtype"
 import ContextMenu from "../components/ContextMenu"
 import { SharedContext, ScreensContext } from "../App"
 
-const Whiteboard = ({ children, num }) => {
+const Whiteboard = ({ children }) => {
     const { objRef } = useContext(ScreensContext)
     const { setScreens, activeScreen, testing } = useContext(SharedContext)
+    const [testingScreen, setTestingScreen] = useState()
 
-    const className = `${activeScreen === num ? "" : "hidden"} rounded-md border-4 border-slate-500 mr-8 flex flex-grow items-center justify-center relative bg-white`
+    const className = `rounded-md border-4 border-slate-500 mr-8 flex flex-grow items-center justify-center relative bg-white`
     const ref = useRef()
     const [boundingBox, setBoundingBox] = useState({})
 
@@ -23,13 +24,13 @@ const Whiteboard = ({ children, num }) => {
                 const top = delta.y
                 setScreens(screens =>
                     screens.map((screen, key) =>
-                        key === num ? { ...screen, [uuid()]: { id, left, top, canDrag: true, initial: true } } : screen
+                        key === activeScreen ? { ...screen, [uuid()]: { id, left, top, canDrag: true, initial: true } } : screen
                     )
                 )
             }
         },
         hover: ({ dragid, id, width, height, left, top, canDrag }, monitor) => {
-            if (monitor.getItemType() === Dragtype.Moveable) {
+            if (monitor.getItemType() !== Dragtype.MenuTile) {
                 const delta = monitor.getDifferenceFromInitialOffset()
                 var objleft = delta.x + left
                 var objtop = delta.y + top
@@ -40,17 +41,26 @@ const Whiteboard = ({ children, num }) => {
                 if (right > boundingBox.right) objleft = boundingBox.right - width
                 if (objtop < boundingBox.top) objtop = boundingBox.top
                 if (bottom > boundingBox.bottom) objtop = boundingBox.bottom - height
-                setScreens(screens =>
+
+                if (testing) setTestingScreen(screen =>
+                    ({ ...screen, [dragid]: { id, left: objleft, top: objtop, canDrag, initial: false } })
+                )
+
+                else setScreens(screens =>
                     screens.map((screen, key) =>
-                        key === num ? { ...screen, [dragid]: { id, left: objleft, top: objtop, canDrag, initial: false } } : screen
+                        key === activeScreen ? { ...screen, [dragid]: { id, left: objleft, top: objtop, canDrag, initial: false } } : screen
                     )
                 )
             }
         },
         accept: testing ? [Dragtype.Testing] : [Dragtype.MenuTile, Dragtype.Moveable]
-    }, [boundingBox, testing])
+    }, [boundingBox, testing, activeScreen])
 
     const { show } = useContextMenu()
+
+    useEffect(() => {
+        setTestingScreen(children)
+    }, [testing, children])
 
     useEffect(() => {
         // gets size of whiteboard
@@ -71,13 +81,13 @@ const Whiteboard = ({ children, num }) => {
             drop(e)
             ref.current = e
         }} className={className}>
-            {Object.entries(children).length ? Object.entries(children).map(
+            {Object.entries(children).length ? Object.entries(testing ? testingScreen : children).map(
                 ([dragid, obj], key) =>
                     <div onContextMenu={event => show({ event, id: dragid })} key={key}>
                         <Draggable dragid={dragid} // for element movement
                             {...obj}
                             className="fixed max-h-[100px] max-w-[100px]" // absolute positioning on whiteboard
-                            type={Dragtype.Moveable} //drag type
+                            type={testing ? Dragtype.Testing : Dragtype.Moveable} //drag type
                         >
                             {objRef[obj.id]}
                         </Draggable>

@@ -21,7 +21,7 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
 
     const [, drag, preview] = useDrag(() => ({
         type,
-        canDrag: type !== Dragtype.Testing ? true : canDrag,
+        canDrag: type === Dragtype.MenuTile || type === Dragtype.Moveable ? true : canDrag,
         item: { dragid, id, left: newLeft, top: newTop, width, height },
         collect: (monitor, props) => ({
             isDragging: monitor.isDragging()
