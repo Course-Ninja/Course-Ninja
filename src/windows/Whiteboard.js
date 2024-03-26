@@ -9,48 +9,46 @@ import { SharedContext, ScreensContext } from "../App"
 
 const Whiteboard = ({ children, num }) => {
     const { objRef } = useContext(ScreensContext)
-    const { setScreens, activeScreen } = useContext(SharedContext)
+    const { setScreens, activeScreen, testing } = useContext(SharedContext)
 
     const className = `${activeScreen === num ? "" : "hidden"} rounded-md border-4 border-slate-500 mr-8 flex flex-grow items-center justify-center relative bg-white`
     const ref = useRef()
     const [boundingBox, setBoundingBox] = useState({})
 
     const [, drop] = useDrop({
-        drop: (item, monitor) => {
+        drop: ({ id }, monitor) => {
             if (monitor.getItemType() === Dragtype.MenuTile) {
                 const delta = monitor.getClientOffset()
                 const left = delta.x
                 const top = delta.y
-                const { id } = item
                 setScreens(screens =>
                     screens.map((screen, key) =>
-                        key === num ? { ...screen, [uuid()]: { id, left, top, initial: true } } : screen
+                        key === num ? { ...screen, [uuid()]: { id, left, top, canDrag: true, initial: true } } : screen
                     )
                 )
             }
         },
-        hover: (item, monitor) => {
+        hover: ({ dragid, id, width, height, left, top, canDrag }, monitor) => {
             if (monitor.getItemType() === Dragtype.Moveable) {
                 const delta = monitor.getDifferenceFromInitialOffset()
-                var left = delta.x + item.left
-                var top = delta.y + item.top
-                const { dragid, id, width, height } = item
-                const right = left + width
-                const bottom = top + height
+                var objleft = delta.x + left
+                var objtop = delta.y + top
+                const right = objleft + width
+                const bottom = objtop + height
 
-                if (left < boundingBox.left) left = boundingBox.left
-                if (right > boundingBox.right) left = boundingBox.right - width
-                if (top < boundingBox.top) top = boundingBox.top
-                if (bottom > boundingBox.bottom) top = boundingBox.bottom - height
+                if (objleft < boundingBox.left) objleft = boundingBox.left
+                if (right > boundingBox.right) objleft = boundingBox.right - width
+                if (objtop < boundingBox.top) objtop = boundingBox.top
+                if (bottom > boundingBox.bottom) objtop = boundingBox.bottom - height
                 setScreens(screens =>
                     screens.map((screen, key) =>
-                        key === num ? { ...screen, [dragid]: { id, left, top, initial: false } } : screen
+                        key === num ? { ...screen, [dragid]: { id, left: objleft, top: objtop, canDrag, initial: false } } : screen
                     )
                 )
             }
         },
-        accept: [Dragtype.MenuTile, Dragtype.Moveable]
-    })
+        accept: testing ? [Dragtype.Testing] : [Dragtype.MenuTile, Dragtype.Moveable]
+    }, [boundingBox, testing])
 
     const { show } = useContextMenu()
 
@@ -66,7 +64,7 @@ const Whiteboard = ({ children, num }) => {
                 bottom: rect.bottom
             })
         }
-    }, [num])
+    }, [children])
 
     return (
         <div ref={e => {
