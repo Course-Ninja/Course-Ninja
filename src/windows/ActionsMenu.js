@@ -19,8 +19,8 @@ const ActionsMenu = () => {
                 </span>
             </div>
             <div className="flex flex-col p-2 gap-2">
-                {actions.map((action) => (
-                    <div className="flex flex-wrap align-middle gap-2">
+                {actions.map((action, key) => (
+                    <div className="flex flex-wrap align-middle gap-2" key={key}>
                         If
                         <div className={entityClass}>condition</div>
                         &#11157;
