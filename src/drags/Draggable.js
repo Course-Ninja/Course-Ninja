@@ -4,7 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { getEmptyImage } from "react-dnd-html5-backend"
 import ContextMenu from "../components/ContextMenu"
 
-const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, top = 0, className, initial, name: receivedName }) => {
+const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, top = 0, className = "", initial, name: receivedName, canDrag = true }) => {
     const ref = useRef()
     const [newLeft, setNewLeft] = useState(0)
     const [newTop, setNewTop] = useState(0)
@@ -25,21 +25,22 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
 
     const [, drag, preview] = useDrag(() => ({
         type,
+        canDrag: type === Dragtype.MenuTile || type === Dragtype.Moveable || canDrag,
         item: { dragid, id, left: newLeft, top: newTop, width, height, name: receivedName },
         collect: (monitor, props) => ({
             isDragging: monitor.isDragging()
         })
-    }), [type, dragid, id, newLeft, newTop, width, height, receivedName])
+    }), [type, dragid, id, newLeft, newTop, width, height, canDrag, receivedName])
 
     useEffect(() => {
-        if (type === Dragtype.Moveable)
+        if (type !== Dragtype.MenuTile)
             preview(getEmptyImage(), { captureDraggingState: true })
     }, [preview, type])
 
     return <div
         ref={e => { drag(e); ref.current = e }}
         onClick={() => ref.current.focus()}
-        tabIndex="0"
+        tabIndex={canDrag ? "0" : undefined}
         style={{ left: newLeft, top: newTop }}
         className={`${className} cursor-move ${type === Dragtype.Moveable ? "focus:outline-dotted focus:outline-[3px]" : ""}`}>
         {children}

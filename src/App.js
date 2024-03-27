@@ -5,7 +5,7 @@ import EditorPane from './windows/EditorPane'
 import Whiteboard from './windows/Whiteboard';
 import ShapesTab from './tabs/ShapesTab';
 import InsertTab from './tabs/InsertTab';
-import TextTab from './tabs/TextTab';
+import FruitsTab from './tabs/FruitsTab';
 import TabsPane from './windows/TabsPane'
 import ToolboxTab from './tabs/ToolboxTab';
 import ThemesTab from './tabs/ThemesTab';
@@ -15,7 +15,6 @@ import Navbar from './windows/Navbar';
 import ActionsMenu from './windows/ActionsMenu';
 import Screens from './windows/Screens';
 import TestRun from './windows/TestRun'
-import TestScreen from './windows/TestScreen';
 import ReactModal from 'react-modal';
 
 ReactModal.setAppElement("#root")
@@ -24,7 +23,7 @@ export const EditorContext = createContext()
 export const ScreensContext = createContext()
 export const ActionsContext = createContext()
 
-const defaultTab = "Shapes"
+const defaultTab = "Fruits"
 export const TabContext = createContext(defaultTab)
 
 function App() {
@@ -56,15 +55,12 @@ function App() {
           </TabsPane>
         </TabContext.Provider>
         <div id="editor" className="flex flex-col flex-grow justify-between">
-          <SharedContext.Provider value={{ activeScreen, setScreens }}>
-            <ScreensContext.Provider value={{ objRef, screens, setActiveScreen, testing, setTesting }}>
+          <SharedContext.Provider value={{ testing, activeScreen, setScreens }}>
+            <ScreensContext.Provider value={{ objRef, screens, setActiveScreen, setTesting }}>
               <div className='flex h-full m-8 mr-0'>
-                {testing ? <TestScreen>
-                  {screens[activeScreen]}
-                </TestScreen> : screens.map((screen, key) => <Whiteboard key={key} num={key}>
-                  {screen}
+                <Whiteboard>
+                  {screens.find((screen, key) => activeScreen === key)}
                 </Whiteboard>
-                )}
                 <div className='flex flex-col w-1/6'>
                   <TestRun />
                   <div className='m-2 h-1/2 h-px grow'>
@@ -82,7 +78,7 @@ function App() {
               <EditorPane>
                 <ShapesTab name="Shapes"></ShapesTab>
                 <InsertTab name="Insert"></InsertTab>
-                <TextTab name="Fruits"></TextTab>
+                <FruitsTab name="Fruits"></FruitsTab>
                 <ThemesTab name="Themes"></ThemesTab>
                 <DrawTab name="Draw"></DrawTab>
                 <ToolboxTab name="Toolbox"></ToolboxTab>
