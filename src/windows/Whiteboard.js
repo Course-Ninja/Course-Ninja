@@ -4,7 +4,6 @@ import { useContextMenu } from "react-contexify"
 import { v4 as uuid } from "uuid"
 import Draggable from "../drags/Draggable"
 import Dragtype from "../drags/Dragtype"
-import ContextMenu from "../components/ContextMenu"
 import { SharedContext, ScreensContext } from "../App"
 
 const Whiteboard = ({ children }) => {
@@ -29,7 +28,7 @@ const Whiteboard = ({ children }) => {
                 )
             }
         },
-        hover: ({ dragid, id, width, height, left, top, canDrag }, monitor) => {
+        hover: ({ dragid, id, width, height, left, top, canDrag, name }, monitor) => {
             if (monitor.getItemType() !== Dragtype.MenuTile) {
                 const delta = monitor.getDifferenceFromInitialOffset()
                 var objleft = delta.x + left
@@ -48,7 +47,7 @@ const Whiteboard = ({ children }) => {
 
                 else setScreens(screens =>
                     screens.map((screen, key) =>
-                        key === activeScreen ? { ...screen, [dragid]: { id, left: objleft, top: objtop, canDrag, initial: false } } : screen
+                        key === activeScreen ? { ...screen, [dragid]: { id, left: objleft, top: objtop, canDrag, initial: false, name } } : screen
                     )
                 )
             }
@@ -91,7 +90,6 @@ const Whiteboard = ({ children }) => {
                         >
                             {objRef[obj.id]}
                         </Draggable>
-                        <ContextMenu id={dragid} />
                     </div>
             ) : <p className="select-none">Whiteboard</p>}
         </div>

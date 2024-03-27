@@ -15,7 +15,9 @@ import Navbar from './windows/Navbar';
 import ActionsMenu from './windows/ActionsMenu';
 import Screens from './windows/Screens';
 import TestRun from './windows/TestRun'
+import ReactModal from 'react-modal';
 
+ReactModal.setAppElement("#root")
 export const SharedContext = createContext()
 export const EditorContext = createContext()
 export const ScreensContext = createContext()
