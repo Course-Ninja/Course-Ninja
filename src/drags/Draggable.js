@@ -43,7 +43,7 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
         style={{ left: newLeft, top: newTop }}
         className={`${className} cursor-move ${type === Dragtype.Moveable ? "focus:outline-dotted focus:outline-[3px]" : ""}`}>
         {children}
-        {name ? <span>{name}</span> : null}
+        <span>{receivedName}</span>
         {type === Dragtype.Moveable ? <ContextMenu id={dragid} nameSetter={setName}/> : null}
     </div>
 }
