@@ -4,15 +4,12 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { getEmptyImage } from "react-dnd-html5-backend"
 import ContextMenu from "../components/ContextMenu"
 
-const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, top = 0, className = "", initial, name: receivedName, canDrag = true }) => {
+const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, top = 0, className = "", initial, name, canDrag = true }) => {
     const ref = useRef()
     const [newLeft, setNewLeft] = useState(0)
     const [newTop, setNewTop] = useState(0)
     const [width, setWidth] = useState()
     const [height, setHeight] = useState()
-    const [name, setName] = useState("")
-
-    receivedName = name ? name : receivedName
 
     useLayoutEffect(() => {
         const { width, height } = ref.current
@@ -26,11 +23,11 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
     const [, drag, preview] = useDrag(() => ({
         type,
         canDrag: type === Dragtype.MenuTile || type === Dragtype.Moveable || canDrag,
-        item: { dragid, id, left: newLeft, top: newTop, width, height, name: receivedName },
+        item: { dragid, id, left: newLeft, top: newTop, width, height, name },
         collect: (monitor, props) => ({
             isDragging: monitor.isDragging()
         })
-    }), [type, dragid, id, newLeft, newTop, width, height, canDrag, receivedName])
+    }), [type, dragid, id, newLeft, newTop, width, height, canDrag, name])
 
     useEffect(() => {
         if (type !== Dragtype.MenuTile)
@@ -38,14 +35,14 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
     }, [preview, type])
 
     return <div
-        ref={e => { drag(e); ref.current = e }}
+        ref={e => { ref.current = drag(e)}}
         onClick={() => ref.current.focus()}
         tabIndex={canDrag ? "0" : undefined}
         style={{ left: newLeft, top: newTop }}
         className={`${className} cursor-move ${type === Dragtype.Moveable ? "focus:outline-dotted focus:outline-[3px]" : ""}`}>
         {children}
-        <span>{receivedName}</span>
-        {type === Dragtype.Moveable ? <ContextMenu id={dragid} nameSetter={setName}/> : null}
+        <span>{name}</span>
+        {type === Dragtype.Moveable ? <ContextMenu id={dragid}/> : null}
     </div>
 }
 
