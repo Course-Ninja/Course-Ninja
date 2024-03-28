@@ -12,9 +12,6 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
     const [newTop, setNewTop] = useState(0)
     const [width, setWidth] = useState()
     const [height, setHeight] = useState()
-    const rename = useRename();
-    const remove = useDelete();
-    const { activeScreen } = useContext(SharedContext)
 
     useLayoutEffect(() => {
         const { width, height } = ref.current
@@ -53,7 +50,7 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
     }, [preview, type])
 
     return <div
-        ref={e => { if (!isDragging) drop(e); drag(e); ref.current = e }}
+        ref={e => { if (!isDragging) drop(e); ref.current = drag(e)}}
         onClick={() => ref.current.focus()}
         tabIndex={canDrag ? "0" : undefined}
         style={{ left: newLeft, top: newTop }}

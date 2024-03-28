@@ -7,8 +7,7 @@ import { SharedContext, ScreensContext } from "../App"
 import Button from "./Button"
 
 const ContextMenu = ({ id }) => {
-    const { setScreens, activeScreen } = useContext(SharedContext)
-    const { screens } = useContext(ScreensContext)
+    const { activeScreen, setScreens } = useContext(SharedContext)
     const [modalOpen, openModal] = useState(false)
     const [name, setName] = useState("")
     const [canDrag, setCanDrag] = useState(false)
@@ -21,7 +20,9 @@ const ContextMenu = ({ id }) => {
 
     const handleRename = () => {
         openModal(false)
-        rename(activeScreen, id, name);
+        setScreens(screens => screens.map(
+            (screen, key) => key === activeScreen ? {...screen, [id]: {...screen[id], name}} : screen
+        ))
     }
 
     const handleCanDrag = () => setScreens(screens => screens.map((screen, idx) => {

@@ -29,26 +29,26 @@ const Whiteboard = ({ children }) => {
             }
             console.log(monitor.getItemType())
         },
-        hover: ({ dragid, id, width, height, left, top, canDrag, name }, monitor) => {
+        hover: (item, monitor) => {
             if (monitor.getItemType() !== Dragtype.MenuTile) {
                 const delta = monitor.getDifferenceFromInitialOffset()
-                var objleft = delta.x + left
-                var objtop = delta.y + top
-                const right = objleft + width
-                const bottom = objtop + height
+                var objleft = delta.x + item.left
+                var objtop = delta.y + item.top
+                const right = objleft + item.width
+                const bottom = objtop + item.height
 
                 if (objleft < boundingBox.left) objleft = boundingBox.left
-                if (right > boundingBox.right) objleft = boundingBox.right - width
+                if (right > boundingBox.right) objleft = boundingBox.right - item.width
                 if (objtop < boundingBox.top) objtop = boundingBox.top
-                if (bottom > boundingBox.bottom) objtop = boundingBox.bottom - height
+                if (bottom > boundingBox.bottom) objtop = boundingBox.bottom - item.height
 
                 if (testing) setTestingScreen(screen =>
-                    ({ ...screen, [dragid]: { id, left: objleft, top: objtop, canDrag, initial: false, name } })
+                    ({ ...screen, [item.dragid]: { ...item, left: objleft, top: objtop, initial: false } })
                 )
 
                 else setScreens(screens =>
                     screens.map((screen, key) =>
-                        key === activeScreen ? { ...screen, [dragid]: { id, left: objleft, top: objtop, canDrag, initial: false, name } } : screen
+                        key === activeScreen ? { ...screen, [item.dragid]: { ...item, left: objleft, top: objtop, initial: false } } : screen
                     )
                 )
             }
@@ -77,10 +77,7 @@ const Whiteboard = ({ children }) => {
     }, [children])
 
     return (
-        <div ref={e => {
-            drop(e)
-            ref.current = e
-        }} className={className}>
+        <div ref={e => { ref.current = drop(e) }} className={className}>
             {Object.entries(children).length ? Object.entries(testing ? testingScreen : children).map(
                 ([dragid, obj], key) =>
                     <div onContextMenu={event => show({ event, id: dragid })} key={key}>
