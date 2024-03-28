@@ -23,10 +23,11 @@ const Whiteboard = ({ children }) => {
                 const top = delta.y
                 setScreens(screens =>
                     screens.map((screen, key) =>
-                        key === activeScreen ? { ...screen, [uuid()]: { id, left, top, canDrag: true, initial: true } } : screen
+                        key === activeScreen ? { ...screen, [uuid()]: { id, left, top, canDrag: false, initial: true, name: "" } } : screen
                     )
                 )
             }
+            console.log(monitor.getItemType())
         },
         hover: ({ dragid, id, width, height, left, top, canDrag, name }, monitor) => {
             if (monitor.getItemType() !== Dragtype.MenuTile) {
@@ -42,7 +43,7 @@ const Whiteboard = ({ children }) => {
                 if (bottom > boundingBox.bottom) objtop = boundingBox.bottom - height
 
                 if (testing) setTestingScreen(screen =>
-                    ({ ...screen, [dragid]: { id, left: objleft, top: objtop, canDrag, initial: false } })
+                    ({ ...screen, [dragid]: { id, left: objleft, top: objtop, canDrag, initial: false, name } })
                 )
 
                 else setScreens(screens =>
@@ -86,7 +87,7 @@ const Whiteboard = ({ children }) => {
                         <Draggable dragid={dragid} // for element movement
                             {...obj}
                             className="fixed max-h-[100px] max-w-[100px]" // absolute positioning on whiteboard
-                            type={testing ? Dragtype.Testing : Dragtype.Moveable} //drag type
+                            type={obj["canDrag"] && testing ? Dragtype.Testing : Dragtype.Moveable} //drag type
                         >
                             {objRef[obj.id]}
                         </Draggable>
