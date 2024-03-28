@@ -1,16 +1,18 @@
-import { Menu, Item, Separator } from "react-contexify"
+import { Menu, Item, Separator, Submenu } from "react-contexify"
 import Modal from 'react-modal'
 import 'react-contexify/ReactContexify.css'
 import { useDelete } from "./utils"
 import { useContext, useState } from "react"
 import { SharedContext } from "../App"
 import Button from "./Button"
+import { VariableContext } from "../windows/Whiteboard"
 
-const ContextMenu = ({ id, canDrag }) => {
+const ContextMenu = ({ id, canDrag, handleVariable }) => {
     const { setScreens, activeScreen } = useContext(SharedContext)
     const [modalOpen, openModal] = useState(false)
     const [name, setName] = useState("")
     const remove = useDelete()
+    const { variableIds } = useContext(VariableContext)
 
     const collectName = ({ target: { value } }) => {
         setName(value)
@@ -30,7 +32,7 @@ const ContextMenu = ({ id, canDrag }) => {
         }
         return screen
     }))
-
+  
     return <>
         <Modal
             isOpen={modalOpen}
@@ -56,6 +58,11 @@ const ContextMenu = ({ id, canDrag }) => {
             <Item onClick={() => openModal(true)}>Rename</Item>
             <Item onClick={() => remove(activeScreen, id)}>Delete</Item>
             <Item onClick={() => handleCanDrag()}>Moveable {canDrag && String.fromCharCode(10003)}</Item>
+            <Submenu label="Variable Menu">
+                {variableIds.map(id => (
+                    <Item data={id} onClick={e => handleVariable(e.data)}>{id}</Item>
+                ))}
+            </Submenu>
         </Menu>
     </>
 }

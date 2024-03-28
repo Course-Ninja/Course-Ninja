@@ -3,7 +3,9 @@ import Dragtype from "./Dragtype"
 import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { getEmptyImage } from "react-dnd-html5-backend"
 import ContextMenu from "../components/ContextMenu"
-import { WhiteboardContext } from "../windows/Whiteboard"
+import { VariableContext, WhiteboardContext } from "../windows/Whiteboard"
+import { ScreensContext, SharedContext } from "../App"
+import { useRename } from "../components/utils"
 
 export const TextContext = createContext();
 
@@ -15,6 +17,11 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
     const [height, setHeight] = useState()
     const [dragId, setDragId] = useState(dragid)
     const setTestingScreen = useContext(WhiteboardContext)?.setTestingScreen
+    const activeScreen = useContext(SharedContext)?.activeScreen
+    const setVariableIds = useContext(VariableContext)?.setVariableIds
+    const screens = useContext(ScreensContext)?.screens
+    const [variableId, setVariableId] = useState({})
+    const rename = useRename()
 
     useLayoutEffect(() => {
         const { width, height } = ref.current
@@ -49,13 +56,30 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
     // testing screen getting overwritten
     // item must be added before drop target for drop to be detected
 
+    const handleVariable = (variableId) => {
+        if (screens !== undefined) {
+            setVariableId(variableId);
+            const screen = screens[activeScreen]
+            rename(activeScreen, dragid, screen[variableId]["name"])
+        }
+    }
+
     useEffect(() => {
-        if (type !== Dragtype.MenuTile)
+        if (type !== Dragtype.MenuTile) {
             preview(getEmptyImage(), { captureDraggingState: true })
-    }, [preview, type])
+            if (children.type.name === "Variable") { 
+                setVariableIds(variableIds => { 
+                    if (!variableIds.includes(dragid)) variableIds.push(dragid); 
+                    return variableIds;
+                })
+            }
+        }
+        
+    }, [preview, type, variableId])
+
 
     return (
-        <TextContext.Provider value={{ dragId, setDragId }}>
+        <TextContext.Provider value={{ dragId, setDragId }} className="fixed max-h-[100px] max-w-[100px]">
             <div
                 ref={e => { if (!isDragging) drop(e); ref.current = drag(e) }}
                 onClick={() => ref.current.focus()}
@@ -64,7 +88,7 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
                 className={`${className} cursor-move ${type === Dragtype.Moveable ? "focus:outline-dotted focus:outline-[3px]" : ""}`}>
                 {children}
                 <span className="text-[48px]">{name}</span>
-                {type === Dragtype.Moveable ? <ContextMenu id={dragid} canDrag={canDrag} /> : null}
+                {type === Dragtype.Moveable ? <ContextMenu id={dragid} canDrag={canDrag} handleVariable={handleVariable}/> : null}
             </div>
         </TextContext.Provider>
     )

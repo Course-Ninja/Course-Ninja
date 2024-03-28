@@ -1,6 +1,7 @@
 import Button from "../components/Button"
 import Text from "../components/Text"
 import TileContainer from "../components/TileContainer"
+import Variable from "../components/Variable"
 
 const ToolboxTab = () => {
     const handleClick = () => {
@@ -14,6 +15,7 @@ const ToolboxTab = () => {
                 </p>
             </Button>
             <Text/>
+            <Variable/>
         </TileContainer>
     )
 }
