@@ -1,10 +1,12 @@
-import { useContext, useState, useEffect, useRef } from "react"
+import { createContext, useContext, useState, useEffect, useRef } from "react"
 import { useDrop } from "react-dnd"
 import { useContextMenu } from "react-contexify"
 import { v4 as uuid } from "uuid"
 import Draggable from "../drags/Draggable"
 import Dragtype from "../drags/Dragtype"
 import { SharedContext, ScreensContext } from "../App"
+
+export const WhiteboardContext = createContext()
 
 const Whiteboard = ({ children }) => {
     const { objRef } = useContext(ScreensContext)
@@ -27,7 +29,6 @@ const Whiteboard = ({ children }) => {
                     )
                 )
             }
-            console.log(monitor.getItemType())
         },
         hover: (item, monitor) => {
             if (monitor.getItemType() !== Dragtype.MenuTile) {
@@ -78,18 +79,20 @@ const Whiteboard = ({ children }) => {
 
     return (
         <div ref={e => { ref.current = drop(e) }} className={className}>
-            {Object.entries(children).length ? Object.entries(testing ? testingScreen : children).map(
-                ([dragid, obj], key) =>
-                    <div onContextMenu={event => show({ event, id: dragid })} key={key}>
-                        <Draggable dragid={dragid} // for element movement
-                            {...obj}
-                            className="fixed max-h-[100px] max-w-[100px]" // absolute positioning on whiteboard
-                            type={obj["canDrag"] && testing ? Dragtype.Testing : Dragtype.Moveable} //drag type
-                        >
-                            {objRef[obj.id]}
-                        </Draggable>
-                    </div>
-            ) : <p className="select-none">Whiteboard</p>}
+            <WhiteboardContext.Provider value={{testingScreen, setTestingScreen}}>
+                {Object.entries(children).length ? Object.entries(testing ? testingScreen : children).map(
+                    ([dragid, obj], key) =>
+                        <div onContextMenu={event => show({ event, id: dragid })} key={key}>
+                            <Draggable dragid={dragid} // for element movement
+                                {...obj}
+                                className="fixed max-h-[100px] max-w-[100px]" // absolute positioning on whiteboard
+                                type={obj["canDrag"] && testing ? Dragtype.Testing : Dragtype.Moveable} //drag type
+                            >
+                                {objRef[obj.id]}
+                            </Draggable>
+                        </div>
+                ) : <p className="select-none">Whiteboard</p>}
+            </WhiteboardContext.Provider>
         </div>
     )
 }

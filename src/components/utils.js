@@ -13,20 +13,6 @@ export const useDelete = () => {
     }, [setScreens])
 }
 
-export const useRename = () => {
-    const { setScreens } = useContext(SharedContext)
-
-    return useCallback((activeScreen, id, name) => {
-        setScreens(screens => screens.map((screen, idx) => {
-            if (idx === activeScreen) {
-                const item = screen[id]
-                item["name"] = name
-            }
-            return screen
-        }))
-    })
-}
-
 export const objectEquals = (obj1, obj2) => {
     const keys1 = Object.keys(obj1)
     const keys2 = Object.keys(obj2)
