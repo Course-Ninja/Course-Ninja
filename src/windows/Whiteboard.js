@@ -15,8 +15,7 @@ const Whiteboard = ({ children }) => {
     const { testing } = useContext(SharedContext)
     const [testingScreen, setTestingScreen] = useState()
     const [testingVariables, setTestingVariables] = useState()
-    // TODO change back
-    const [variables, setVariables] = useState({ x: { targets: [], value: "0" } })
+    const [variables, setVariables] = useState({})
     const editScreen = useEditScreen()
 
     const className = `rounded-md border-4 border-slate-500 mr-8 flex flex-grow items-center justify-center relative bg-white`

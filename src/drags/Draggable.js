@@ -3,7 +3,7 @@ import Dragtype from "./Dragtype"
 import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { getEmptyImage } from "react-dnd-html5-backend"
 import ContextMenu from "../components/ContextMenu"
-import { VariableContext, WhiteboardContext } from "../windows/Whiteboard"
+import { WhiteboardContext } from "../windows/Whiteboard"
 
 export const TextContext = createContext();
 
@@ -14,9 +14,6 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
     const [width, setWidth] = useState()
     const [height, setHeight] = useState()
     const setTestingScreen = useContext(WhiteboardContext)?.setTestingScreen
-    const setVariables = useContext(VariableContext)?.setTestingVariables
-    // const variables = useContext(VariableContext)?.variables
-    // const updateNames = useUpdateNames()
 
     useLayoutEffect(() => {
         const { width, height } = ref.current
@@ -53,15 +50,8 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
                     return [id, obj]
                 }).filter(([key,]) => key !== item.dragid)
             ))
-
-            if (variable) {
-                setVariables(variables => {
-                    variables[variable].value = num.toString()
-                    return variables
-                })
-            }
         }
-    }), [dragid, name, setTestingScreen, setVariables])
+    }), [dragid, name, setTestingScreen])
     // testing screen getting overwritten
     // item must be added before drop target for drop to be detected
 
