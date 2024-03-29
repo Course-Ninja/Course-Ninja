@@ -3,7 +3,7 @@ import { ScreensContext, SharedContext } from "../App";
 import { TextContext } from "../drags/Draggable";
 import { WhiteboardContext } from "../windows/Whiteboard";
 
-const Text = () => {
+const Variable = () => {
     const { dragid } = useContext(TextContext);
     const { activeScreen, testing, setScreens } = useContext(SharedContext);
     const { screens } = useContext(ScreensContext)
@@ -13,6 +13,7 @@ const Text = () => {
         if (testing) {
             setTestingScreen((screen) => {
                 screen[dragid]["name"] = text;
+                return screen
             });
         } else {
             setScreens((screens) =>
@@ -32,9 +33,9 @@ const Text = () => {
             className="text-center text-lg"
             onChange={(event) => handleChange(event.target.value)}
         >
-            {(dragid === undefined || screen[dragid]["name"] === "") ? "Text" : ""}
+            {(dragid === undefined || screen[dragid]["name"] === "") ? "Variable" : ""}
         </div>
     );
 };
 
-export default Text;
+export default Variable;

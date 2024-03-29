@@ -15,12 +15,14 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
     const [newTop, setNewTop] = useState(0)
     const [width, setWidth] = useState()
     const [height, setHeight] = useState()
-    const [dragId, setDragId] = useState(dragid)
     const setTestingScreen = useContext(WhiteboardContext)?.setTestingScreen
+    const testingScreen = useContext(WhiteboardContext)?.testingScreen
     const activeScreen = useContext(SharedContext)?.activeScreen
+    const testing = useContext(SharedContext)?.testing
     const setVariableIds = useContext(VariableContext)?.setVariableIds
     const screens = useContext(ScreensContext)?.screens
-    const [variableId, setVariableId] = useState({})
+    const [variableId, setVariableId] = useState("")
+    const [variable, setVariable] = useState({})
     const rename = useRename()
 
     useLayoutEffect(() => {
@@ -57,17 +59,31 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
     // item must be added before drop target for drop to be detected
 
     const handleVariable = (variableId) => {
-        if (screens !== undefined) {
-            setVariableId(variableId);
-            const screen = screens[activeScreen]
-            rename(activeScreen, dragid, screen[variableId]["name"])
-        }
+        setVariableId(variableId);
+        const screen = screens[activeScreen]
+        rename(activeScreen, dragid, screen[variableId]["name"])
     }
+
+    useEffect(() => {
+        if (Object.keys(screens[activeScreen]).includes(variableId)) handleVariable(variableId)
+    }, [variable])
+
+    useEffect(() => {
+        if (variableId !== "") {
+            if (testing) {
+                const newTestingScreen = testingScreen
+                newTestingScreen[dragid]["name"] = newTestingScreen[variableId]["name"]
+                setTestingScreen(newTestingScreen)
+            } else {
+                setVariable(screens.find((screen) => (screens.findIndex(s => s === screen) === activeScreen))[variableId])
+            }
+        }
+    }, [screens, testingScreen])
 
     useEffect(() => {
         if (type !== Dragtype.MenuTile) {
             preview(getEmptyImage(), { captureDraggingState: true })
-            if (children.type.name === "Variable") { 
+            if (true || children.type.name === "Variable") { 
                 setVariableIds(variableIds => { 
                     if (!variableIds.includes(dragid)) variableIds.push(dragid); 
                     return variableIds;
@@ -75,11 +91,11 @@ const Draggable = ({ type = Dragtype.MenuTile, dragid, id, children, left = 0, t
             }
         }
         
-    }, [preview, type, variableId])
+    }, [preview, type])
 
 
     return (
-        <TextContext.Provider value={{ dragId, setDragId }} className="fixed max-h-[100px] max-w-[100px]">
+        <TextContext.Provider value={{ dragid }} className="fixed max-h-[100px] max-w-[100px]">
             <div
                 ref={e => { if (!isDragging) drop(e); ref.current = drag(e) }}
                 onClick={() => ref.current.focus()}

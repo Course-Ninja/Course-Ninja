@@ -4,13 +4,12 @@ import { SharedContext } from "../App"
 export const useDelete = () => {
     const { setScreens } = useContext(SharedContext)
 
-    return useCallback((index, id) => {
-        setScreens(screens => screens.map((screen, idx) =>
-            idx === index ? Object.fromEntries(
-                Object.entries(screen).filter(([key,]) => key !== id)
-            ) : screen)
-        )
-    }, [setScreens])
+    return (index, id) => setScreens(screens => screens.map((screen, idx) => {
+        if (idx === index) {
+            delete screen[id]
+        }
+        return screen
+    }))
 }
 
 export const useRename = () => {
