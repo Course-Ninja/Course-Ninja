@@ -59,7 +59,7 @@ function App() {
             <ScreensContext.Provider value={{ objRef, screens, setActiveScreen, setTesting }}>
               <div className='flex h-full m-8 mr-0'>
                 <Whiteboard>
-                  {screens.find((screen, key) => activeScreen === key)}
+                  {screens[activeScreen]}
                 </Whiteboard>
                 <div className='flex flex-col w-1/6'>
                   <TestRun />
