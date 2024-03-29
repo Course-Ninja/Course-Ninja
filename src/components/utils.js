@@ -1,4 +1,4 @@
-import { useContext, useCallback } from "react"
+import { useContext } from "react"
 import { SharedContext } from "../App"
 import { VariableContext } from "../windows/Whiteboard"
 
@@ -43,22 +43,32 @@ export function useEditScreen() {
 }
 
 export function useUpdateNames() {
-    const { testing } = useContext(SharedContext)
     const editScreen = useEditScreen()
 
-    return useCallback((variables, setTestingScreen) => {
-        Object.entries(variables).map(([, { targets, value }]) => {
-            if (testing) targets.forEach(target => {
-                setTestingScreen(screen => {
-                    screen[target].name=value
-                    return screen
-                })
-            }) 
-            else {
-                targets.forEach(target => editScreen(target, obj => { obj.name = value; return obj }))
-            }
+    return (variables) => {
+        Object.entries(variables).map(([, { targets, value }]) =>
+            targets.forEach(target => editScreen(target, obj => { obj.name = value; return obj }))
+        )
+    }
+}
+
+export function useUpdateSingleDraggable() {
+    const { testing } = useContext(SharedContext)
+    const variables = useContext(VariableContext)?.variables
+    const editScreen = useEditScreen()
+
+    return (id, setTestingScreen) => {
+        if (testing) setTestingScreen(screen => {
+            const { variable } = screen[id]
+            if (variable) screen[id].name = variables[variable].value
+            return screen
         })
-    }, [])
+        else editScreen(id, obj => {
+            const { variable } = obj
+            if (variable) obj.name = variables[variable].value
+            return obj
+        })
+    }
 }
 
 export const objectEquals = (obj1, obj2) => {

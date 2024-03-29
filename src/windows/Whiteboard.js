@@ -5,15 +5,19 @@ import { v4 as uuid } from "uuid"
 import Draggable from "../drags/Draggable"
 import Dragtype from "../drags/Dragtype"
 import { SharedContext, ScreensContext } from "../App"
+import { useEditScreen } from "../components/utils"
 
 export const WhiteboardContext = createContext()
 export const VariableContext = createContext()
 
 const Whiteboard = ({ children }) => {
     const { objRef } = useContext(ScreensContext)
-    const { setScreens, activeScreen, testing } = useContext(SharedContext)
+    const { testing } = useContext(SharedContext)
     const [testingScreen, setTestingScreen] = useState()
-    const [variableIds, setVariableIds] = useState([])
+    const [testingVariables, setTestingVariables] = useState()
+    // TODO change back
+    const [variables, setVariables] = useState({ x: { targets: [], value: "0" } })
+    const editScreen = useEditScreen()
 
     const className = `rounded-md border-4 border-slate-500 mr-8 flex flex-grow items-center justify-center relative bg-white`
     const ref = useRef()
@@ -25,11 +29,7 @@ const Whiteboard = ({ children }) => {
                 const delta = monitor.getClientOffset()
                 const left = delta.x
                 const top = delta.y
-                setScreens(screens =>
-                    screens.map((screen, key) =>
-                        key === activeScreen ? { ...screen, [uuid()]: { id, left, top, canDrag: false, initial: true, name: "" } } : screen
-                    )
-                )
+                editScreen(uuid(), () => ({ id, left, top, canDrag: false, initial: true, name: "" }))
             }
         },
         hover: (item, monitor) => {
@@ -49,21 +49,25 @@ const Whiteboard = ({ children }) => {
                     ({ ...screen, [item.dragid]: { ...item, left: objleft, top: objtop, initial: false } })
                 )
 
-                else setScreens(screens =>
-                    screens.map((screen, key) =>
-                        key === activeScreen ? { ...screen, [item.dragid]: { ...item, left: objleft, top: objtop, initial: false } } : screen
-                    )
-                )
+                else editScreen(item.dragid, obj => ({ ...obj, left: objleft, top: objtop, initial: false }))
             }
         },
         accept: testing ? [Dragtype.Testing] : [Dragtype.MenuTile, Dragtype.Moveable]
-    }, [boundingBox, testing, activeScreen])
+    }, [boundingBox, testing])
 
     const { show } = useContextMenu()
 
     useEffect(() => {
         setTestingScreen(children)
-    }, [testing, children])
+        setTestingVariables(variables)
+    }, [testing, children, variables])
+
+    useEffect(() => {
+        if (!testing) Object.entries(variables).map(([, { targets, value }]) =>
+            targets.forEach(target => editScreen(target, obj => { obj.name = value; return obj }))
+        )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [testing, variables])
 
     useEffect(() => {
         // gets size of whiteboard
@@ -81,8 +85,8 @@ const Whiteboard = ({ children }) => {
 
     return (
         <div ref={e => { ref.current = drop(e) }} className={className}>
-            <WhiteboardContext.Provider value={{testingScreen, setTestingScreen}}>
-                <VariableContext.Provider value={{variableIds, setVariableIds}}>
+            <WhiteboardContext.Provider value={{ testingScreen, setTestingScreen }}>
+                <VariableContext.Provider value={{ variables: testing ? testingVariables : variables, setVariables: testing ? setTestingVariables : setVariables, setTestingVariables }}>
                     {Object.entries(children).length ? Object.entries(testing ? testingScreen : children).map(
                         ([dragid, obj], key) =>
                             <div onContextMenu={event => show({ event, id: dragid })} key={key}>

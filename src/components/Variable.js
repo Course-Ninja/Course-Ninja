@@ -1,39 +1,37 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { ScreensContext, SharedContext } from "../App";
 import { TextContext } from "../drags/Draggable";
-import { WhiteboardContext } from "../windows/Whiteboard";
+import { VariableContext, WhiteboardContext } from "../windows/Whiteboard";
+import { useEditScreen } from "./utils";
 
 const Variable = () => {
     const { dragid } = useContext(TextContext);
-    const { activeScreen, testing, setScreens } = useContext(SharedContext);
+    const { activeScreen, testing } = useContext(SharedContext);
     const { screens } = useContext(ScreensContext)
     const setTestingScreen = useContext(WhiteboardContext)?.setTestingScreen;
+    const variableIds = useContext(VariableContext)?.variableIds
 
-    const handleChange = (text) => {
-        if (testing) {
-            setTestingScreen((screen) => {
-                screen[dragid]["name"] = text;
-                return screen
-            });
-        } else {
-            setScreens((screens) =>
-                screens.map((screen, key) => {
-                    if (key === activeScreen) {
-                        screen[dragid]["name"] = text;
-                    }
+    const editScreen = useEditScreen()
+
+    useEffect(() => {
+        if (variableIds) {
+            const text = variableIds[screens[activeScreen][dragid]["name"]]
+            if (testing) {
+                setTestingScreen((screen) => {
+                    screen[dragid]["name"] = text;
                     return screen
-                })
-            );
-        }
-    };
+                });
+            } else {
+                editScreen(dragid, obj => ({ ...obj, name: text }))
+            }
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [variableIds, activeScreen, dragid, testing, setTestingScreen])
 
     const screen = screens?.[activeScreen];
     return (
-        <div
-            className="text-center text-lg"
-            onChange={(event) => handleChange(event.target.value)}
-        >
-            {(dragid === undefined || screen[dragid]["name"] === "") ? "Variable" : ""}
+        <div className="text-center text-lg">
+            {(screen[dragid] && screen[dragid].variable) ? "" : "Variable"}
         </div>
     );
 };
