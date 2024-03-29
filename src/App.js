@@ -73,18 +73,18 @@ function App() {
                   </div>
                 </div>
               </div>
+              <EditorContext.Provider value={{ setObjRefs, setTabs, activeTab }}>
+                <EditorPane>
+                  <ShapesTab name="Shapes"></ShapesTab>
+                  <InsertTab name="Insert"></InsertTab>
+                  <FruitsTab name="Fruits"></FruitsTab>
+                  <ThemesTab name="Themes"></ThemesTab>
+                  <DrawTab name="Draw"></DrawTab>
+                  <ToolboxTab name="Toolbox"></ToolboxTab>
+                  <ActionsTab name="Actions"></ActionsTab>
+                </EditorPane>
+              </EditorContext.Provider>
             </ScreensContext.Provider>
-            <EditorContext.Provider value={{ setObjRefs, setTabs, activeTab }}>
-              <EditorPane>
-                <ShapesTab name="Shapes"></ShapesTab>
-                <InsertTab name="Insert"></InsertTab>
-                <FruitsTab name="Fruits"></FruitsTab>
-                <ThemesTab name="Themes"></ThemesTab>
-                <DrawTab name="Draw"></DrawTab>
-                <ToolboxTab name="Toolbox"></ToolboxTab>
-                <ActionsTab name="Actions"></ActionsTab>
-              </EditorPane>
-            </EditorContext.Provider>
           </SharedContext.Provider>
         </div>
       </div>
